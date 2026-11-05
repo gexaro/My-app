@@ -863,7 +863,45 @@ async function initializeApp() {
   try {
 
     await initializeDatabase();
+// Make dashboard status cards clickable
 
+function makeStatCardClickable(card, pageId, label) {
+
+  if (!card) return;
+
+  card.style.cursor = "pointer";
+  card.setAttribute("role", "button");
+  card.setAttribute("tabindex", "0");
+  card.setAttribute("aria-label", label);
+
+  function openPage() {
+    showPage(pageId);
+  }
+
+  card.addEventListener("click", openPage);
+
+  card.addEventListener("keydown", function(event) {
+
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      openPage();
+    }
+
+  });
+
+}
+
+makeStatCardClickable(
+  document.querySelector(".stat-card.warning"),
+  "soon",
+  "عرض الأدوية القريبة من الانتهاء"
+);
+
+makeStatCardClickable(
+  document.querySelector(".stat-card.expired"),
+  "expired",
+  "عرض الأدوية منتهية الصلاحية"
+);
     $("#medicineForm").addEventListener(
       "submit",
       handleAddMedicine
