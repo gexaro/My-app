@@ -2805,3 +2805,194 @@ body[data-theme="dark"] #backup > .form-card input[type="file"] {
     transition: none !important;
   }
 }
+/* =========================================
+   GLASS UI — FINAL FINISHING PACK V18
+   ========================================= */
+
+/* Medicine cards refinement */
+.medicine-card {
+  border-radius: 22px;
+  padding: 19px 17px;
+}
+
+.medicine-top {
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.medicine-top > div {
+  min-width: 0;
+  flex: 1;
+}
+
+.medicine-name {
+  overflow-wrap: anywhere;
+  line-height: 1.7;
+}
+
+.medicine-date {
+  line-height: 1.9;
+  overflow-wrap: anywhere;
+}
+
+.medicine-actions {
+  gap: 10px;
+  margin-top: 16px;
+  padding-top: 14px;
+}
+
+.medicine-actions button {
+  flex: 1;
+  min-height: 43px;
+  border-radius: 13px;
+  font-weight: 800;
+}
+
+.medicine-actions .delete-btn {
+  color: var(--red);
+  background: color-mix(in srgb, var(--red) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--red) 15%, transparent);
+}
+
+/* Monthly navigation */
+#monthlyBackButton {
+  min-height: 49px;
+  margin: 18px 0;
+  border-radius: 15px;
+  font-weight: 800;
+}
+
+#monthlyMonthsTitle {
+  line-height: 1.7;
+}
+
+#monthlyList {
+  margin-top: 16px;
+}
+
+/* Edit dialog refinement */
+.edit-dialog {
+  width: min(92%, 440px);
+  max-height: calc(100dvh - 32px);
+  border-radius: 25px;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+
+.edit-dialog .form-card {
+  padding: 23px 19px;
+}
+
+.edit-dialog h3 {
+  margin: 0 0 18px;
+  font-size: 18px;
+  font-weight: 850;
+}
+
+.edit-dialog .secondary-btn {
+  margin-top: 10px;
+}
+
+/* Search results spacing */
+#homeSearchResults {
+  margin-bottom: 20px;
+}
+
+#homeSearchResults:empty {
+  display: none;
+}
+
+/* Better button feedback */
+button:disabled {
+  cursor: not-allowed;
+}
+
+.primary-btn:focus-visible,
+.secondary-btn:focus-visible,
+.medicine-actions button:focus-visible,
+.nav-item:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--primary) 70%, transparent);
+  outline-offset: 3px;
+}
+
+/* File input refinement */
+input[type="file"] {
+  color: var(--text);
+  max-width: 100%;
+}
+
+/* Small screen refinements */
+@media (max-width: 380px) {
+  .container {
+    padding-right: 13px;
+    padding-left: 13px;
+  }
+
+  .medicine-card {
+    padding: 16px 14px;
+  }
+
+  .medicine-top {
+    gap: 8px;
+  }
+
+  .status-badge {
+    padding: 5px 8px;
+    font-size: 9px;
+  }
+
+  .medicine-actions button {
+    min-height: 42px;
+    padding: 9px 8px;
+  }
+
+  .welcome {
+    padding: 17px 15px;
+  }
+}
+
+/* Larger screens */
+@media (min-width: 700px) {
+  .container {
+    max-width: 680px;
+    padding-right: 24px;
+    padding-left: 24px;
+  }
+
+  .bottom-nav {
+    max-width: 656px;
+    right: 50%;
+    left: auto;
+    width: calc(100% - 32px);
+    transform: translateX(50%);
+  }
+}
+
+/* Dark mode finishing */
+body[data-theme="dark"] .medicine-actions .delete-btn {
+  background: rgba(223, 133, 128, .09);
+  border-color: rgba(223, 133, 128, .16);
+}
+
+body[data-theme="dark"] .edit-dialog {
+  border-color: rgba(255,255,255,.1);
+}
+
+/* Smooth scrolling and accessibility */
+html {
+  scroll-padding-top: 20px;
+  scroll-padding-bottom: 110px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+
+  .medicine-actions button,
+  #monthlyBackButton,
+  .edit-dialog {
+    animation: none !important;
+    transition: none !important;
+  }
+}
