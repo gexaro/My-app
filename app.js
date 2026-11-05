@@ -403,7 +403,78 @@ async function renderMonthlyMedicines() {
 
 }
 
+async function renderMonthlyMonths() {
+  try {
+    const medicines = await getAllMedicines();
+    const months = {};
 
+    medicines.forEach(function(medicine) {
+      const month = medicine.expiryDate.slice(0, 7);
+
+      if (!months[month]) {
+        months[month] = 0;
+      }
+
+      months[month]++;
+    });
+
+    const container = $("#monthlyMonths");
+    clearElement(container);
+
+    const sortedMonths = Object.keys(months).sort();
+
+    if (!sortedMonths.length) {
+      container.append(
+        createElement(
+          "div",
+          "empty-state",
+          "لا توجد أدوية مسجلة"
+        )
+      );
+      return;
+    }
+
+    sortedMonths.forEach(function(month) {
+      const parts = month.split("-");
+      const label = parts[1] + " / " + parts[0];
+
+      const button = createElement(
+        "button",
+        "secondary-btn",
+        label + " — " + months[month] + " دواء"
+      );
+
+      button.type = "button";
+
+      button.addEventListener("click", function() {
+        $("#monthFilter").value = month;
+
+        $("#monthlyMonths").style.display = "none";
+        $("#monthlyMonthsTitle").style.display = "none";
+        $("#monthlyList").style.display = "block";
+        $("#monthlyBackButton").style.display = "block";
+
+        renderMonthlyMedicines();
+      });
+
+      container.append(button);
+    });
+
+  } catch (error) {
+    console.error(error);
+    showToast("تعذر تحميل قائمة الأشهر");
+  }
+}
+
+function returnToMonthlyMonths() {
+  $("#monthlyMonths").style.display = "block";
+  $("#monthlyMonthsTitle").style.display = "block";
+  $("#monthlyList").style.display = "none";
+  $("#monthlyBackButton").style.display = "none";
+
+  $("#monthFilter").value = "";
+  renderMonthlyMonths();
+}
 /* =========================================
    10. Add Single Medicine
 ========================================= */
