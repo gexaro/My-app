@@ -2744,3 +2744,64 @@ body[data-theme="dark"] #csvPreview {
     transition: none !important;
   }
 }
+/* =========================================
+   GLASS UI — BACKUP SECTION V17
+   ========================================= */
+
+#backup > .form-card {
+  padding: 23px 19px;
+  border-radius: 23px;
+}
+
+#backup > .form-card h3 {
+  margin-bottom: 10px;
+  font-size: 17px;
+  font-weight: 850;
+}
+
+#backup > .form-card .help-text {
+  margin: 10px 0 17px;
+  padding: 12px 14px;
+  border-radius: 13px;
+  background: color-mix(in srgb, var(--primary-light) 55%, transparent);
+  line-height: 1.9;
+}
+
+#backup > .form-card input[type="file"] {
+  width: 100%;
+  min-height: 48px;
+  padding: 10px;
+  border: 1px dashed var(--border);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--surface) 85%, transparent);
+  font-size: 12px;
+}
+
+#backup > .form-card button {
+  width: 100%;
+  min-height: 51px;
+  margin-top: 13px;
+  border-radius: 15px;
+  font-weight: 850;
+}
+
+#backup > .form-card hr {
+  margin: 25px 0;
+  opacity: .7;
+}
+
+body[data-theme="dark"] #backup > .form-card .help-text {
+  background: rgba(255,255,255,.045);
+}
+
+body[data-theme="dark"] #backup > .form-card input[type="file"] {
+  background: rgba(15,23,18,.35);
+  border-color: rgba(255,255,255,.12);
+  color: var(--text);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #backup > .form-card button {
+    transition: none !important;
+  }
+}
