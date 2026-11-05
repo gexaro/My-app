@@ -408,8 +408,6 @@ function formatExpiryDate(dateString) {
   return `${month}/${year}`;
 
 }
-
-
 function formatDaysRemaining(days) {
 
   if (days === null || days === undefined) {
