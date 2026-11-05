@@ -55,7 +55,23 @@ function clearElement(element) {
   element.replaceChildren();
 
 }
+function convertMonthToExpiryDate(monthValue) {
 
+  if (!/^\d{4}-\d{2}$/.test(monthValue)) {
+    return "";
+  }
+
+  const [year, month] = monthValue.split("-").map(Number);
+
+  const lastDay = new Date(year, month, 0).getDate();
+
+  return (
+    year + "-" +
+    String(month).padStart(2, "0") + "-" +
+    String(lastDay).padStart(2, "0")
+  );
+
+}
 
 /* =========================================
    2. Page Navigation
