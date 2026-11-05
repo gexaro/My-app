@@ -142,42 +142,56 @@ async function runTransaction(mode, operation) {
 function prepareMedicine(data) {
 
   const name = String(data.name || "").trim();
-  const expiryDate = String(data.expiryDate || "").trim();
+  let expiryDate = String(data.expiryDate || "").trim();
 
   if (!name) {
     throw new Error("اسم الدواء مطلوب");
   }
 
+  // إذا وصل الشهر والسنة فقط، نحولهما إلى آخر يوم من الشهر
+  if (/^\d{4}-\d{2}$/.test(expiryDate)) {
+
+    const [year, month] = expiryDate.split("-").map(Number);
+
+    if (month < 1 || month > 12) {
+      throw new Error("تاريخ الانتهاء غير صالح");
+    }
+
+    const lastDay = new Date(
+      Date.UTC(year, month, 0)
+    ).getUTCDate();
+
+    expiryDate =
+      `${year}-${String(month).padStart(2, "0")}-${String(lastDay).padStart(2, "0")}`;
+  }
+
+  // التحقق من التاريخ الكامل
   if (!/^\d{4}-\d{2}-\d{2}$/.test(expiryDate)) {
     throw new Error("تاريخ الانتهاء غير صالح");
   }
 
-  const parsedDate = new Date(expiryDate + "T00:00:00");
+  const [year, month, day] = expiryDate.split("-").map(Number);
+
+  const parsedDate = new Date(
+    Date.UTC(year, month - 1, day)
+  );
 
   if (
-    Number.isNaN(parsedDate.getTime()) ||
-    parsedDate.getFullYear() !== Number(expiryDate.slice(0, 4)) ||
-    parsedDate.getMonth() + 1 !== Number(expiryDate.slice(5, 7)) ||
-    parsedDate.getDate() !== Number(expiryDate.slice(8, 10))
+    parsedDate.getUTCFullYear() !== year ||
+    parsedDate.getUTCMonth() + 1 !== month ||
+    parsedDate.getUTCDate() !== day
   ) {
     throw new Error("تاريخ الانتهاء غير صالح");
   }
 
   return {
-
     name: name,
-
     expiryDate: expiryDate,
-
     expiryMonth: expiryDate.slice(0, 7),
-
     notes: String(data.notes || "").trim(),
-
     updatedAt: new Date().toISOString()
-
   };
 }
-
 
 /* =========================================
    4. Add Medicine
