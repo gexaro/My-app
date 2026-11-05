@@ -1156,7 +1156,7 @@ async function previewCsvImport() {
 
     csvPendingMedicines.slice(0, 10).forEach((item, index) => {
       lines.push(
-        (index + 1) + ". " + item.name + " — " + item.expiryDate
+(index + 1) + ". " + item.name + " — " + formatExpiryDate(item.expiryDate)
       );
     });
 
