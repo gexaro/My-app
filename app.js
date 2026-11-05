@@ -1326,6 +1326,24 @@ $("#homeSearchInput").addEventListener(
   "input",
   handleHomeSearch
 );
+document.querySelectorAll(".clear-search-btn").forEach(function(button) {
+  const input = document.getElementById(button.dataset.target);
+
+  function updateClearButton() {
+    button.style.display = input.value.trim() ? "block" : "none";
+  }
+
+  input.addEventListener("input", updateClearButton);
+
+  button.addEventListener("click", function() {
+    input.value = "";
+    updateClearButton();
+    input.dispatchEvent(new Event("input", { bubbles: true }));
+    input.focus();
+  });
+
+  updateClearButton();
+});
     $("#monthFilter").addEventListener(
       "change",
       renderMonthlyMedicines
