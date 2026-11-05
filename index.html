@@ -185,11 +185,20 @@
         <p>عرض وإدارة جميع الأدوية المسجلة</p>
       </div>
 
-      <input
-        type="search"
-        id="searchInput"
-        placeholder="ابحث عن دواء..."
-      >
+<div class="search-wrapper">
+  <input
+    type="search"
+    id="searchInput"
+    placeholder="ابحث عن دواء..."
+  >
+  <button
+    type="button"
+    class="clear-search-btn"
+    data-target="searchInput"
+    aria-label="مسح البحث"
+    style="display:none;"
+  >×</button>
+</div>
 
       <div id="allMedicinesList" class="medicine-list">
         <div class="empty-state">لا توجد أدوية</div>
