@@ -5,7 +5,7 @@
    Version 1.0
 ========================================= */
 
-const CACHE_NAME = "expiry-manager-v11";
+const CACHE_NAME = "expiry-manager-v12";
 
 const APP_FILES = [
   "./",
