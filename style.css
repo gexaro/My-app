@@ -1035,7 +1035,37 @@ button:active {
 #searchInput {
   min-height: 51px;
 }
+/* Search clear button */
+.search-wrapper {
+  position: relative;
+  width: 100%;
+}
 
+.search-wrapper input {
+  width: 100%;
+  padding-left: 45px;
+}
+
+.clear-search-btn {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 30px;
+  min-height: 30px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: #e5e5e5;
+  color: #555;
+  font-size: 23px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 /* Form refinement */
 .form-card h3 {
   font-size: 17px;
