@@ -57,10 +57,26 @@
     <!-- Dashboard -->
     <section id="dashboard" class="page active">
 
-      <div class="welcome">
-        <h2>لوحة التحكم</h2>
-        <p>نظرة عامة على مخزون الأدوية</p>
-      </div>
+<div class="welcome">
+  <div class="dashboard-title-row">
+    <h2 id="pharmacyName">صيدلية دكتور محمد عماد كامل</h2>
+    <button
+      type="button"
+      id="editPharmacyNameBtn"
+      class="edit-pharmacy-name-btn"
+      aria-label="تعديل اسم الصيدلية"
+      title="تعديل الاسم"
+    >
+      <svg viewBox="0 0 24 24" width="18" height="18"
+        fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 20h9"/>
+        <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L8 18l-4 1 1-4Z"/>
+      </svg>
+    </button>
+  </div>
+  <p>نظرة عامة على مخزون الأدوية</p>
+</div>
 <div class="home-search search-wrapper">
   <input
     type="search"
