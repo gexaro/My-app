@@ -826,6 +826,283 @@ async function importBackup() {
 }
 
 
+let csvPendingMedicines = [];
+
+function parseCsvRows(text) {
+
+  const rows = [];
+  let row = [];
+  let field = "";
+  let insideQuotes = false;
+
+  for (let i = 0; i < text.length; i++) {
+
+    const char = text[i];
+
+    if (char === '"') {
+
+      if (insideQuotes && text[i + 1] === '"') {
+        field += '"';
+        i++;
+      } else {
+        insideQuotes = !insideQuotes;
+      }
+
+    } else if (char === "," && !insideQuotes) {
+
+      row.push(field);
+      field = "";
+
+    } else if (
+      (char === "\n" || char === "\r") &&
+      !insideQuotes
+    ) {
+
+      if (char === "\r" && text[i + 1] === "\n") {
+        i++;
+      }
+
+      row.push(field);
+
+      if (row.some(value => value.trim() !== "")) {
+        rows.push(row);
+      }
+
+      row = [];
+      field = "";
+
+    } else {
+
+      field += char;
+
+    }
+
+  }
+
+  row.push(field);
+
+  if (row.some(value => value.trim() !== "")) {
+    rows.push(row);
+  }
+
+  return rows;
+
+}
+
+function parseCsvExpiryDate(value, monthValue) {
+
+  const raw = String(value || "").trim();
+
+  if (/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(raw)) {
+
+    const [day, month, year] = raw.split("/").map(Number);
+
+    const date = new Date(Date.UTC(year, month - 1, day));
+
+    if (
+      date.getUTCFullYear() !== year ||
+      date.getUTCMonth() + 1 !== month ||
+      date.getUTCDate() !== day
+    ) {
+      return "";
+    }
+
+    return `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+
+  }
+
+  if (!raw) {
+
+    const match = String(monthValue || "")
+      .trim()
+      .match(/^(\d{1,2})\/(\d{4})$/);
+
+    if (!match) return "";
+
+    const month = Number(match[1]);
+    const year = Number(match[2]);
+
+    if (month < 1 || month > 12) return "";
+
+    const lastDay = new Date(
+      Date.UTC(year, month, 0)
+    ).getUTCDate();
+
+    return `${year}-${String(month).padStart(2, "0")}-${String(lastDay).padStart(2, "0")}`;
+
+  }
+
+  return "";
+
+}
+
+async function previewCsvImport() {
+
+  const file = $("#csvImportFile").files[0];
+  const preview = $("#csvPreview");
+  const confirmButton = $("#confirmCsvImportBtn");
+
+  csvPendingMedicines = [];
+  confirmButton.disabled = true;
+  preview.textContent = "";
+
+  if (!file) {
+    showToast("اختر ملف CSV أولاً");
+    return;
+  }
+
+  try {
+
+    const content = (await file.text()).replace(/^\uFEFF/, "");
+    const rows = parseCsvRows(content);
+
+    const headerIndex = rows.findIndex(row => {
+
+      const headers = row.map(value =>
+        value.trim().toLowerCase()
+      );
+
+      return (
+        headers.includes("name") &&
+        headers.includes("expiry date")
+      );
+
+    });
+
+    if (headerIndex === -1) {
+      throw new Error("لم يتم العثور على عناوين الأعمدة المطلوبة");
+    }
+
+    const headers = rows[headerIndex].map(value =>
+      value.trim().toLowerCase()
+    );
+
+    const nameIndex = headers.indexOf("name");
+    const dateIndex = headers.indexOf("expiry date");
+    const monthIndex = headers.indexOf("expiry month");
+    const notesIndex = headers.indexOf("notes");
+
+    const current = await getAllMedicines();
+
+    const seen = new Set(
+      current.map(item =>
+        item.name.trim().toLowerCase() + "|" + item.expiryDate
+      )
+    );
+
+    let invalidCount = 0;
+    let duplicateCount = 0;
+
+    for (let i = headerIndex + 1; i < rows.length; i++) {
+
+      const columns = rows[i];
+
+      const name = String(columns[nameIndex] || "").trim();
+
+      if (!name) continue;
+
+      const expiryDate = parseCsvExpiryDate(
+        columns[dateIndex],
+        monthIndex >= 0 ? columns[monthIndex] : ""
+      );
+
+      if (!expiryDate) {
+        invalidCount++;
+        continue;
+      }
+
+      const key = name.toLowerCase() + "|" + expiryDate;
+
+      if (seen.has(key)) {
+        duplicateCount++;
+        continue;
+      }
+
+      seen.add(key);
+
+      csvPendingMedicines.push({
+        name: name,
+        expiryDate: expiryDate,
+        notes: notesIndex >= 0
+          ? String(columns[notesIndex] || "").trim()
+          : ""
+      });
+
+    }
+
+    const lines = [
+      "نتيجة معاينة الملف:",
+      "الأدوية الجاهزة للاستيراد: " + csvPendingMedicines.length,
+      "الصفوف غير الصالحة: " + invalidCount,
+      "الأدوية المكررة: " + duplicateCount,
+      "",
+      "أول 10 أدوية:"
+    ];
+
+    csvPendingMedicines.slice(0, 10).forEach((item, index) => {
+      lines.push(
+        (index + 1) + ". " + item.name + " — " + item.expiryDate
+      );
+    });
+
+    preview.textContent = lines.join("\n");
+
+    confirmButton.disabled = csvPendingMedicines.length === 0;
+
+    if (!csvPendingMedicines.length) {
+      showToast("لم يتم العثور على أدوية صالحة للاستيراد");
+    }
+
+  } catch (error) {
+
+    console.error(error);
+    preview.textContent = error.message;
+    showToast("تعذرت معاينة ملف CSV");
+
+  }
+
+}
+
+async function confirmCsvImport() {
+
+  if (!csvPendingMedicines.length) {
+    showToast("قم بمعاينة الملف أولاً");
+    return;
+  }
+
+  const confirmed = window.confirm(
+    "سيتم استيراد " +
+    csvPendingMedicines.length +
+    " دواء. هل تريد المتابعة؟"
+  );
+
+  if (!confirmed) return;
+
+  try {
+
+    const count = csvPendingMedicines.length;
+
+    await bulkAddMedicines(csvPendingMedicines);
+
+    csvPendingMedicines = [];
+
+    $("#csvImportFile").value = "";
+    $("#csvPreview").textContent = "";
+    $("#confirmCsvImportBtn").disabled = true;
+
+    showToast("تم استيراد " + count + " دواء بنجاح");
+
+    await renderDashboard();
+
+  } catch (error) {
+
+    console.error(error);
+    showToast(error.message || "تعذر استيراد الأدوية");
+
+  }
+
+}
+
 /* =========================================
    18. Register Service Worker
 ========================================= */
