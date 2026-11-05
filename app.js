@@ -1322,7 +1322,10 @@ $("#confirmCsvImportBtn").addEventListener(
       "input",
       handleSearch
     );
-
+$("#homeSearchInput").addEventListener(
+  "input",
+  handleHomeSearch
+);
     $("#monthFilter").addEventListener(
       "change",
       renderMonthlyMedicines
