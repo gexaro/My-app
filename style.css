@@ -807,3 +807,75 @@ body[data-theme="dark"] .bottom-nav {
   outline: 2px solid #d0b995;
   outline-offset: 3px;
 }
+
+/* =========================================
+   LUXURY MOTION SYSTEM
+   ========================================= */
+
+/* Dashboard statistics entrance */
+.stats-grid .stat-card {
+  animation: luxuryReveal .55s cubic-bezier(.2,.8,.2,1) both;
+}
+
+.stats-grid .stat-card:nth-child(1) {
+  animation-delay: .05s;
+}
+
+.stats-grid .stat-card:nth-child(2) {
+  animation-delay: .12s;
+}
+
+.stats-grid .stat-card:nth-child(3) {
+  animation-delay: .19s;
+}
+
+.stats-grid .stat-card:nth-child(4) {
+  animation-delay: .26s;
+}
+
+/* Medicine cards entrance */
+.medicine-card:nth-child(1) {
+  animation-delay: .04s;
+}
+
+.medicine-card:nth-child(2) {
+  animation-delay: .09s;
+}
+
+.medicine-card:nth-child(3) {
+  animation-delay: .14s;
+}
+
+.medicine-card:nth-child(4) {
+  animation-delay: .19s;
+}
+
+.medicine-card:nth-child(5) {
+  animation-delay: .24s;
+}
+
+/* Elegant touch interaction */
+@media (hover: hover) {
+  .medicine-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 32px rgba(42, 55, 43, .11);
+  }
+}
+
+/* Smooth button feedback */
+button {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+button:active {
+  transform: scale(.97);
+}
+
+/* Reduced motion accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .stats-grid .stat-card,
+  .medicine-card {
+    animation: none !important;
+  }
+}
