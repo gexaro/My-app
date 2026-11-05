@@ -2996,3 +2996,44 @@ html {
     transition: none !important;
   }
 }
+/* Pharmacy Name Edit Button */
+#dashboard .dashboard-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  z-index: 2;
+  min-width: 0;
+}
+
+#dashboard .dashboard-title-row h2 {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+#dashboard .edit-pharmacy-name-btn {
+  flex: 0 0 34px;
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid rgba(255,255,255,.25);
+  border-radius: 11px;
+  background: rgba(255,255,255,.12);
+  color: #fff;
+  cursor: pointer;
+  transition: transform .2s ease, background .2s ease;
+}
+
+#dashboard .edit-pharmacy-name-btn:active {
+  transform: scale(.92);
+  background: rgba(255,255,255,.22);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #dashboard .edit-pharmacy-name-btn {
+    transition: none;
+  }
+}
