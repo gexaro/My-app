@@ -902,3 +902,48 @@ document.addEventListener(
   "DOMContentLoaded",
   initializeApp
 );
+
+/* =========================================
+   LUXURY THEME SYSTEM
+   ========================================= */
+
+(function () {
+  const themeButton = document.getElementById("themeToggle");
+
+  function applyTheme(theme) {
+    const selectedTheme =
+      theme === "dark" ? "dark" : "light";
+
+    document.body.dataset.theme = selectedTheme;
+
+    localStorage.setItem("expiry-manager-theme", selectedTheme);
+
+    if (themeButton) {
+      themeButton.textContent =
+        selectedTheme === "dark" ? "☀" : "☾";
+
+      themeButton.setAttribute(
+        "aria-label",
+        selectedTheme === "dark"
+          ? "التبديل إلى الوضع الفاتح"
+          : "التبديل إلى الوضع الداكن"
+      );
+    }
+  }
+
+  const savedTheme =
+    localStorage.getItem("expiry-manager-theme") || "light";
+
+  applyTheme(savedTheme);
+
+  if (themeButton) {
+    themeButton.addEventListener("click", function () {
+      const currentTheme =
+        document.body.dataset.theme || "light";
+
+      applyTheme(
+        currentTheme === "light" ? "dark" : "light"
+      );
+    });
+  }
+})();
