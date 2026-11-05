@@ -2577,3 +2577,67 @@ body[data-theme="dark"] input[type="month"] {
     transition: none !important;
   }
 }
+/* =========================================
+   GLASS UI — ADD FORM POLISH V14
+   ========================================= */
+
+#medicineForm {
+  padding: 23px 19px;
+}
+
+#medicineForm label {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+#medicineForm label:first-child {
+  margin-top: 0;
+}
+
+#medicineForm input,
+#medicineForm textarea {
+  border-radius: 15px;
+}
+
+#medicineForm textarea {
+  min-height: 88px;
+}
+
+#medicineForm .primary-btn,
+#bulkAddBtn {
+  min-height: 53px;
+  margin-top: 22px;
+  border-radius: 16px;
+  font-weight: 850;
+  letter-spacing: .1px;
+  box-shadow:
+    0 7px 18px color-mix(in srgb, var(--primary) 17%, transparent),
+    inset 0 1px 0 rgba(255,255,255,.2);
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease,
+    filter .2s ease;
+}
+
+#medicineForm .primary-btn:active,
+#bulkAddBtn:active {
+  transform: scale(.975);
+  filter: brightness(.96);
+  box-shadow: 0 3px 9px rgba(30,50,38,.1);
+}
+
+body[data-theme="dark"] #medicineForm .primary-btn,
+body[data-theme="dark"] #bulkAddBtn {
+  box-shadow:
+    0 7px 20px rgba(0,0,0,.2),
+    inset 0 1px 0 rgba(255,255,255,.1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #medicineForm .primary-btn,
+  #bulkAddBtn {
+    transition: none !important;
+  }
+}
