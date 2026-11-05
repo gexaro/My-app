@@ -1432,3 +1432,36 @@ document.addEventListener(
     });
   }
 })();
+/* Pharmacy Name Customization */
+(function () {
+  const nameElement = document.getElementById("pharmacyName");
+  const editButton = document.getElementById("editPharmacyNameBtn");
+
+  if (!nameElement || !editButton) return;
+
+  const storageKey = "expiry-manager-pharmacy-name";
+  const savedName = localStorage.getItem(storageKey);
+
+  if (savedName) {
+    nameElement.textContent = savedName;
+  }
+
+  editButton.addEventListener("click", function () {
+    const newName = prompt(
+      "أدخل اسم الصيدلية:",
+      nameElement.textContent
+    );
+
+    if (newName === null) return;
+
+    const cleanName = newName.trim();
+
+    if (!cleanName) {
+      alert("اسم الصيدلية لا يمكن أن يكون فارغاً");
+      return;
+    }
+
+    nameElement.textContent = cleanName;
+    localStorage.setItem(storageKey, cleanName);
+  });
+})();
