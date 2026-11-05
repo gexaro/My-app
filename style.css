@@ -1620,3 +1620,122 @@ textarea:focus-visible {
     transition: none !important;
   }
 }
+
+
+/* =========================================
+   GLASS UI — FLOATING IOS NAVIGATION V3
+   ========================================= */
+
+.bottom-nav {
+  right: 12px;
+  left: 12px;
+  bottom: calc(8px + env(safe-area-inset-bottom));
+  width: auto;
+  padding: 7px 5px;
+  gap: 3px;
+  border: 1px solid rgba(255,255,255,.45);
+  border-radius: 24px;
+  background: color-mix(in srgb, var(--surface) 72%, transparent);
+  box-shadow:
+    0 10px 35px rgba(20, 40, 28, .12),
+    inset 0 1px 0 rgba(255,255,255,.55);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  backdrop-filter: blur(28px) saturate(180%);
+}
+
+body[data-theme="dark"] .bottom-nav {
+  background: rgba(30, 40, 34, .78);
+  border-color: rgba(255,255,255,.09);
+  box-shadow:
+    0 10px 35px rgba(0,0,0,.32),
+    inset 0 1px 0 rgba(255,255,255,.06);
+}
+
+.nav-item {
+  position: relative;
+  isolation: isolate;
+  min-width: 0;
+  min-height: 55px;
+  padding: 6px 1px;
+  border-radius: 17px;
+  color: var(--muted);
+  transition:
+    color .22s ease,
+    transform .2s cubic-bezier(.2,.8,.2,1);
+}
+
+.nav-item::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 2px 1px;
+  border-radius: 15px;
+  background: var(--primary-light);
+  opacity: 0;
+  transform: scale(.88);
+  transition:
+    opacity .22s ease,
+    transform .22s cubic-bezier(.2,.8,.2,1);
+}
+
+.nav-item.active {
+  color: var(--primary);
+  background: transparent;
+}
+
+.nav-item.active::before {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.nav-item span {
+  font-size: 22px;
+  line-height: 1;
+  transition: transform .22s cubic-bezier(.2,.8,.2,1);
+}
+
+.nav-item.active span {
+  transform: translateY(-2px) scale(1.08);
+}
+
+.nav-item small {
+  font-size: 10px;
+  font-weight: 650;
+  transition: color .2s ease;
+}
+
+.nav-item:active {
+  transform: scale(.91);
+}
+
+.nav-item:active span {
+  transform: scale(.9);
+}
+
+/* Small screen adjustment */
+@media (max-width: 380px) {
+  .bottom-nav {
+    right: 8px;
+    left: 8px;
+    gap: 1px;
+    padding-right: 3px;
+    padding-left: 3px;
+  }
+
+  .nav-item small {
+    font-size: 9px;
+  }
+
+  .nav-item span {
+    font-size: 21px;
+  }
+}
+
+/* Navigation motion accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .nav-item,
+  .nav-item::before,
+  .nav-item span {
+    transition: none !important;
+  }
+}
