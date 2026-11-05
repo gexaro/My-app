@@ -261,7 +261,40 @@
         <button id="importBtn" class="secondary-btn">
           استعادة النسخة الاحتياطية
         </button>
+<hr>
 
+<h3>استيراد الأدوية من Google Sheets</h3>
+
+<p class="help-text">
+  اختر ملف CSV لمعاينة الأدوية قبل إضافتها إلى التطبيق.
+</p>
+
+<label for="csvImportFile">ملف CSV</label>
+
+<input
+  type="file"
+  id="csvImportFile"
+  accept=".csv,text/csv"
+>
+
+<button
+  type="button"
+  id="previewCsvBtn"
+  class="primary-btn"
+>
+  معاينة ملف CSV
+</button>
+
+<div id="csvPreview"></div>
+
+<button
+  type="button"
+  id="confirmCsvImportBtn"
+  class="secondary-btn"
+  disabled
+>
+  تأكيد استيراد الأدوية
+</button>
       </div>
 
     </section>
