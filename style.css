@@ -1119,3 +1119,158 @@ body[data-theme="dark"] .medicine-actions .delete-btn {
     padding-left: 14px;
   }
 }
+
+/* =========================================
+   LUXURY MEDICINE CARDS & NAVIGATION
+   ========================================= */
+
+/* Medicine card */
+.medicine-card {
+  position: relative;
+  overflow: hidden;
+  padding: 19px 17px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  box-shadow: 0 5px 18px rgba(35, 55, 42, .045);
+}
+
+.medicine-card::before {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--primary);
+  opacity: .45;
+}
+
+.medicine-top {
+  gap: 13px;
+}
+
+.medicine-name {
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1.8;
+  color: var(--text);
+}
+
+.medicine-date {
+  margin-top: 8px;
+  font-size: 12px;
+  font-weight: 550;
+  color: var(--muted);
+}
+
+/* Status badges */
+.status-badge {
+  padding: 7px 12px;
+  border-radius: 30px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .1px;
+}
+
+.status-safe {
+  background: rgba(84, 131, 106, .13);
+  color: var(--green);
+}
+
+.status-warning {
+  background: rgba(194, 139, 72, .15);
+  color: var(--orange);
+}
+
+.status-expired {
+  background: rgba(189, 98, 92, .14);
+  color: var(--red);
+}
+
+/* Medicine actions */
+.medicine-actions {
+  margin-top: 16px;
+  padding-top: 13px;
+  gap: 10px;
+  border-color: var(--border);
+}
+
+.medicine-actions button {
+  min-height: 40px;
+  padding: 9px 17px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 750;
+  background: var(--primary-light);
+  color: var(--primary);
+}
+
+.medicine-actions .delete-btn {
+  background: rgba(189, 98, 92, .12);
+  color: var(--red);
+}
+
+/* Bottom navigation */
+.bottom-nav {
+  padding: 10px 7px calc(10px + env(safe-area-inset-bottom));
+  gap: 4px;
+}
+
+.nav-item {
+  position: relative;
+  border-radius: 15px;
+  min-height: 53px;
+  gap: 5px;
+  transition: background .25s ease, color .25s ease;
+}
+
+.nav-item span {
+  font-size: 23px;
+  transition: transform .25s ease;
+}
+
+.nav-item small {
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+.nav-item.active {
+  background: var(--primary-light);
+  color: var(--primary);
+}
+
+.nav-item.active span {
+  transform: translateY(-2px);
+}
+
+/* Dark mode */
+body[data-theme="dark"] .medicine-card {
+  box-shadow: 0 5px 18px rgba(0, 0, 0, .12);
+}
+
+body[data-theme="dark"] .medicine-actions .delete-btn {
+  background: rgba(223, 133, 128, .13);
+  color: var(--red);
+}
+
+/* Touch feedback */
+.medicine-actions button:active,
+.nav-item:active {
+  transform: scale(.95);
+}
+
+/* Small screens */
+@media (max-width: 360px) {
+  .nav-item small {
+    font-size: 9px;
+  }
+
+  .medicine-card {
+    padding: 16px 14px;
+  }
+
+  .medicine-actions button {
+    padding: 9px 12px;
+  }
+}
