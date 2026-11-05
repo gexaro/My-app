@@ -1,0 +1,104 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+  <title>My First App</title>
+
+  <meta name="theme-color" content="#101827">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="My App">
+
+  <link rel="manifest" href="./manifest.json">
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 30px 20px;
+      font-family: -apple-system, sans-serif;
+      background: #101827;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 30px;
+    }
+
+    p {
+      color: #b7c3d5;
+    }
+
+    button {
+      width: 100%;
+      padding: 17px;
+      margin-top: 15px;
+      border: none;
+      border-radius: 14px;
+      background: #3478f6;
+      color: white;
+      font-size: 17px;
+      font-weight: bold;
+    }
+
+    #result {
+      margin-top: 25px;
+      font-size: 22px;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="app">
+    <h1>تطبيقي الأول</h1>
+    <p>تجربة تطبيق ويب على الآيفون</p>
+
+    <button onclick="increase()">
+      اضغط هنا
+    </button>
+
+    <div id="result">عدد الضغطات: 0</div>
+  </main>
+
+  <script>
+    let count = Number(localStorage.getItem("count") || 0);
+
+    function update() {
+      document.getElementById("result").textContent =
+        "عدد الضغطات: " + count;
+    }
+
+    function increase() {
+      count++;
+      localStorage.setItem("count", count);
+      update();
+    }
+
+    update();
+
+    if ("serviceWorker" in navigator &&
+        location.protocol.startsWith("http")) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./sw.js")
+          .catch(error => console.log(error));
+      });
+    }
+  </script>
+</body>
+</html>
