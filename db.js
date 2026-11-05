@@ -1,0 +1,481 @@
+
+/* =========================================
+   EXPIRY MANAGER
+   Local Database - IndexedDB
+   Version 1.0
+========================================= */
+
+const DB_NAME = "ExpiryManagerDB";
+const DB_VERSION = 1;
+const STORE_NAME = "medicines";
+
+let databasePromise = null;
+
+
+/* =========================================
+   1. Open Database
+========================================= */
+
+function openDatabase() {
+
+  if (databasePromise) {
+    return databasePromise;
+  }
+
+  databasePromise = new Promise((resolve, reject) => {
+
+    if (!("indexedDB" in window)) {
+      reject(new Error("IndexedDB is not supported"));
+      return;
+    }
+
+    const request = indexedDB.open(DB_NAME, DB_VERSION);
+
+    request.onupgradeneeded = function(event) {
+
+      const db = event.target.result;
+
+      if (!db.objectStoreNames.contains(STORE_NAME)) {
+
+        const store = db.createObjectStore(STORE_NAME, {
+          keyPath: "id",
+          autoIncrement: true
+        });
+
+        store.createIndex("name", "name", {
+          unique: false
+        });
+
+        store.createIndex("expiryDate", "expiryDate", {
+          unique: false
+        });
+
+        store.createIndex("expiryMonth", "expiryMonth", {
+          unique: false
+        });
+
+        store.createIndex("createdAt", "createdAt", {
+          unique: false
+        });
+
+      }
+
+    };
+
+    request.onsuccess = function(event) {
+
+      const db = event.target.result;
+
+      db.onversionchange = function() {
+        db.close();
+        databasePromise = null;
+      };
+
+      resolve(db);
+
+    };
+
+    request.onerror = function() {
+      databasePromise = null;
+      reject(request.error);
+    };
+
+    request.onblocked = function() {
+      console.warn("Database upgrade is blocked");
+    };
+
+  });
+
+  return databasePromise;
+}
+
+
+/* =========================================
+   2. Transaction Helper
+========================================= */
+
+async function runTransaction(mode, operation) {
+
+  const db = await openDatabase();
+
+  return new Promise((resolve, reject) => {
+
+    const transaction = db.transaction(
+      STORE_NAME,
+      mode
+    );
+
+    const store = transaction.objectStore(STORE_NAME);
+
+    let result;
+
+    transaction.oncomplete = function() {
+      resolve(result);
+    };
+
+    transaction.onerror = function() {
+      reject(transaction.error);
+    };
+
+    transaction.onabort = function() {
+      reject(
+        transaction.error ||
+        new Error("Database transaction aborted")
+      );
+    };
+
+    try {
+      result = operation(store);
+    } catch (error) {
+      transaction.abort();
+      reject(error);
+    }
+
+  });
+}
+
+
+/* =========================================
+   3. Prepare Medicine Data
+========================================= */
+
+function prepareMedicine(data) {
+
+  const name = String(data.name || "").trim();
+  const expiryDate = String(data.expiryDate || "").trim();
+
+  if (!name) {
+    throw new Error("اسم الدواء مطلوب");
+  }
+
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(expiryDate)) {
+    throw new Error("تاريخ الانتهاء غير صالح");
+  }
+
+  const parsedDate = new Date(expiryDate + "T00:00:00");
+
+  if (
+    Number.isNaN(parsedDate.getTime()) ||
+    parsedDate.getFullYear() !== Number(expiryDate.slice(0, 4)) ||
+    parsedDate.getMonth() + 1 !== Number(expiryDate.slice(5, 7)) ||
+    parsedDate.getDate() !== Number(expiryDate.slice(8, 10))
+  ) {
+    throw new Error("تاريخ الانتهاء غير صالح");
+  }
+
+  return {
+
+    name: name,
+
+    expiryDate: expiryDate,
+
+    expiryMonth: expiryDate.slice(0, 7),
+
+    notes: String(data.notes || "").trim(),
+
+    updatedAt: new Date().toISOString()
+
+  };
+}
+
+
+/* =========================================
+   4. Add Medicine
+========================================= */
+
+async function addMedicine(data) {
+
+  const medicine = prepareMedicine(data);
+
+  medicine.createdAt = new Date().toISOString();
+
+  return runTransaction("readwrite", function(store) {
+
+    return store.add(medicine);
+
+  });
+
+}
+
+
+/* =========================================
+   5. Add Multiple Medicines
+========================================= */
+
+async function bulkAddMedicines(medicines) {
+
+  if (!Array.isArray(medicines) || medicines.length === 0) {
+    throw new Error("لا توجد أدوية للإضافة");
+  }
+
+  const prepared = medicines.map(function(item) {
+
+    const medicine = prepareMedicine(item);
+
+    medicine.createdAt = new Date().toISOString();
+
+    return medicine;
+
+  });
+
+  return runTransaction("readwrite", function(store) {
+
+    const ids = [];
+
+    prepared.forEach(function(medicine) {
+
+      ids.push(store.add(medicine));
+
+    });
+
+    return ids;
+
+  });
+
+}
+
+
+/* =========================================
+   6. Get All Medicines
+========================================= */
+
+async function getAllMedicines() {
+
+  const db = await openDatabase();
+
+  return new Promise((resolve, reject) => {
+
+    const transaction = db.transaction(
+      STORE_NAME,
+      "readonly"
+    );
+
+    const store = transaction.objectStore(STORE_NAME);
+
+    const request = store.getAll();
+
+    request.onsuccess = function() {
+      resolve(request.result || []);
+    };
+
+    request.onerror = function() {
+      reject(request.error);
+    };
+
+  });
+
+}
+
+
+/* =========================================
+   7. Get One Medicine
+========================================= */
+
+async function getMedicine(id) {
+
+  const db = await openDatabase();
+
+  return new Promise((resolve, reject) => {
+
+    const transaction = db.transaction(
+      STORE_NAME,
+      "readonly"
+    );
+
+    const store = transaction.objectStore(STORE_NAME);
+
+    const request = store.get(Number(id));
+
+    request.onsuccess = function() {
+      resolve(request.result || null);
+    };
+
+    request.onerror = function() {
+      reject(request.error);
+    };
+
+  });
+
+}
+
+
+/* =========================================
+   8. Update Medicine
+========================================= */
+
+async function updateMedicine(id, data) {
+
+  const oldMedicine = await getMedicine(id);
+
+  if (!oldMedicine) {
+    throw new Error("الدواء غير موجود");
+  }
+
+  const updated = prepareMedicine(data);
+
+  const medicine = {
+
+    ...oldMedicine,
+
+    ...updated,
+
+    id: Number(id),
+
+    createdAt: oldMedicine.createdAt,
+
+    updatedAt: new Date().toISOString()
+
+  };
+
+  return runTransaction("readwrite", function(store) {
+
+    return store.put(medicine);
+
+  });
+
+}
+
+
+/* =========================================
+   9. Delete Medicine
+========================================= */
+
+async function deleteMedicine(id) {
+
+  return runTransaction("readwrite", function(store) {
+
+    return store.delete(Number(id));
+
+  });
+
+}
+
+
+/* =========================================
+   10. Delete All Medicines
+========================================= */
+
+async function clearMedicines() {
+
+  return runTransaction("readwrite", function(store) {
+
+    return store.clear();
+
+  });
+
+}
+
+
+/* =========================================
+   11. Search Medicines
+========================================= */
+
+async function searchMedicines(query) {
+
+  const medicines = await getAllMedicines();
+
+  const searchText = String(query || "")
+    .trim()
+    .toLowerCase();
+
+  if (!searchText) {
+    return medicines;
+  }
+
+  return medicines.filter(function(medicine) {
+
+    return (
+      medicine.name.toLowerCase().includes(searchText) ||
+      medicine.expiryDate.includes(searchText) ||
+      medicine.expiryMonth.includes(searchText) ||
+      medicine.notes.toLowerCase().includes(searchText)
+    );
+
+  });
+
+}
+
+
+/* =========================================
+   12. Get Medicines By Month
+========================================= */
+
+async function getMedicinesByMonth(month) {
+
+  const db = await openDatabase();
+
+  return new Promise((resolve, reject) => {
+
+    const transaction = db.transaction(
+      STORE_NAME,
+      "readonly"
+    );
+
+    const store = transaction.objectStore(STORE_NAME);
+
+    const index = store.index("expiryMonth");
+
+    const request = index.getAll(String(month));
+
+    request.onsuccess = function() {
+      resolve(request.result || []);
+    };
+
+    request.onerror = function() {
+      reject(request.error);
+    };
+
+  });
+
+}
+
+
+/* =========================================
+   13. Database Information
+========================================= */
+
+async function getDatabaseInfo() {
+
+  const medicines = await getAllMedicines();
+
+  return {
+
+    databaseName: DB_NAME,
+
+    version: DB_VERSION,
+
+    totalMedicines: medicines.length,
+
+    lastUpdated: new Date().toISOString()
+
+  };
+
+}
+
+
+/* =========================================
+   14. Database Initialization
+========================================= */
+
+async function initializeDatabase() {
+
+  try {
+
+    await openDatabase();
+
+    console.log("Expiry Manager database ready");
+
+    return true;
+
+  } catch (error) {
+
+    console.error(
+      "Database initialization failed:",
+      error
+    );
+
+    throw error;
+
+  }
+
+}
