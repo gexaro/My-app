@@ -747,7 +747,43 @@ function handleSearch() {
 
 }
 
+async function handleHomeSearch() {
 
+  const query = $("#homeSearchInput").value.trim();
+  const results = $("#homeSearchResults");
+
+  if (!query) {
+    results.style.display = "none";
+    clearElement(results);
+    return;
+  }
+
+  try {
+
+    const medicines = await getAllMedicines();
+
+    const filtered = medicines.filter(function(medicine) {
+      return medicine.name
+        .toLowerCase()
+        .includes(query.toLowerCase());
+    });
+
+    results.style.display = "block";
+
+    renderMedicineList(
+      results,
+      sortMedicinesByExpiry(filtered),
+      "لا توجد أدوية مطابقة لبحثك"
+    );
+
+  } catch (error) {
+
+    console.error(error);
+    showToast("تعذر البحث عن الدواء");
+
+  }
+
+}
 /* =========================================
    16. Export Backup
 ========================================= */
