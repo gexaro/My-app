@@ -459,7 +459,9 @@ const expiryDate = convertMonthToExpiryDate(
 
 async function handleBulkAdd() {
 
-  const expiryDate = $("#bulkExpiryDate").value;
+const expiryDate = convertMonthToExpiryDate(
+  $("#bulkExpiryDate").value
+);
 
   const rawText = $("#bulkMedicines").value;
 
