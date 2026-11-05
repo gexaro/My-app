@@ -2335,3 +2335,89 @@ body[data-theme="dark"] .home-search input {
     transition: none !important;
   }
 }
+/* =========================================
+   GLASS UI — MONTH SELECTOR V10
+   ========================================= */
+
+#monthlyMonthsTitle {
+  margin: 18px 0 16px;
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: -.3px;
+}
+
+#monthlyMonths {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+#monthlyMonths .secondary-btn {
+  position: relative;
+  min-height: 68px;
+  padding: 13px 10px;
+  border-radius: 19px;
+  border: 1px solid color-mix(in srgb, var(--border) 65%, transparent);
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--surface) 96%, white),
+      color-mix(in srgb, var(--surface) 84%, var(--primary-light))
+    );
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 750;
+  line-height: 1.6;
+  text-align: center;
+  box-shadow:
+    0 6px 18px rgba(30, 50, 38, .045),
+    inset 0 1px 0 rgba(255,255,255,.65);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease,
+    border-color .2s ease;
+}
+
+#monthlyMonths .secondary-btn:active {
+  transform: scale(.96);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  #monthlyMonths .secondary-btn:hover {
+    transform: translateY(-3px);
+    border-color: color-mix(in srgb, var(--primary) 30%, var(--border));
+    box-shadow: 0 12px 24px rgba(30, 50, 38, .09);
+  }
+}
+
+body[data-theme="dark"] #monthlyMonths .secondary-btn {
+  background: linear-gradient(
+    145deg,
+    rgba(42, 55, 47, .94),
+    rgba(30, 40, 34, .9)
+  );
+  border-color: rgba(255,255,255,.08);
+  box-shadow:
+    0 7px 20px rgba(0,0,0,.17),
+    inset 0 1px 0 rgba(255,255,255,.04);
+}
+
+@media (max-width: 360px) {
+  #monthlyMonths {
+    gap: 9px;
+  }
+
+  #monthlyMonths .secondary-btn {
+    min-height: 62px;
+    padding: 10px 6px;
+    font-size: 13px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #monthlyMonths .secondary-btn {
+    transition: none !important;
+  }
+}
