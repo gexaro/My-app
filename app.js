@@ -571,7 +571,9 @@ async function handleEditMedicine(event) {
 
   const name = $("#editName").value.trim();
 
-  const expiryDate = $("#editDate").value;
+const expiryDate = convertMonthToExpiryDate(
+  $("#editDate").value
+);
 
   const notes = $("#editNotes").value.trim();
 
