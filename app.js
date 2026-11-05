@@ -546,7 +546,7 @@ async function openEditDialog(id) {
 
     $("#editName").value = medicine.name;
 
-    $("#editDate").value = medicine.expiryDate;
+$("#editDate").value = medicine.expiryDate.slice(0, 7);
 
     $("#editNotes").value = medicine.notes || "";
 
