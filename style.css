@@ -778,3 +778,32 @@ body[data-theme="dark"] .bottom-nav {
     scroll-behavior: auto !important;
   }
 }
+
+/* Luxury Theme Toggle */
+
+.theme-toggle {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 15px;
+  border: 1px solid rgba(255,255,255,.24);
+  background: rgba(255,255,255,.10);
+  color: #fffdf8;
+  font-size: 23px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  backdrop-filter: blur(12px);
+  transition: transform .3s ease, background .3s ease;
+}
+
+.theme-toggle:active {
+  transform: rotate(18deg) scale(.88);
+}
+
+.theme-toggle:focus-visible {
+  outline: 2px solid #d0b995;
+  outline-offset: 3px;
+}
