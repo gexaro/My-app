@@ -1283,7 +1283,10 @@ $("#confirmCsvImportBtn").addEventListener(
       "change",
       renderMonthlyMedicines
     );
-
+$("#monthlyBackButton").addEventListener(
+  "click",
+  returnToMonthlyMonths
+);
     $("#exportBtn").addEventListener(
       "click",
       exportBackup
