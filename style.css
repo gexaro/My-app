@@ -2641,3 +2641,55 @@ body[data-theme="dark"] #bulkAddBtn {
     transition: none !important;
   }
 }
+/* =========================================
+   GLASS UI — BULK ADD FORM V15
+   ========================================= */
+
+#add > .form-card {
+  padding: 22px 19px;
+  border-radius: 23px;
+}
+
+#add > .form-card .help-text {
+  padding: 12px 14px;
+  margin-bottom: 18px;
+  border-radius: 13px;
+  background: color-mix(in srgb, var(--primary-light) 55%, transparent);
+  border: 1px solid color-mix(in srgb, var(--primary) 9%, transparent);
+  line-height: 1.9;
+}
+
+#add > .form-card label {
+  margin-top: 19px;
+  margin-bottom: 10px;
+  font-weight: 800;
+}
+
+#add > .form-card textarea {
+  min-height: 145px;
+  line-height: 1.9;
+  border-radius: 15px;
+}
+
+#add > .form-card input {
+  border-radius: 15px;
+}
+
+#add > .form-card #bulkAddBtn {
+  width: 100%;
+  min-height: 53px;
+  margin-top: 20px;
+  border-radius: 16px;
+  font-weight: 850;
+}
+
+body[data-theme="dark"] #add > .form-card .help-text {
+  background: rgba(255,255,255,.045);
+  border-color: rgba(255,255,255,.07);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #add > .form-card {
+    scroll-behavior: auto;
+  }
+}
