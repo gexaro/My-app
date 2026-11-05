@@ -1179,6 +1179,15 @@ makeStatCardClickable(
   "expired",
   "عرض الأدوية منتهية الصلاحية"
 );
+     $("#previewCsvBtn").addEventListener(
+  "click",
+  previewCsvImport
+);
+
+$("#confirmCsvImportBtn").addEventListener(
+  "click",
+  confirmCsvImport
+);
     $("#medicineForm").addEventListener(
       "submit",
       handleAddMedicine
