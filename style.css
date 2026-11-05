@@ -2474,3 +2474,63 @@ body[data-theme="dark"] #monthlyMonths .secondary-btn {
     transition: none !important;
   }
 }
+/* =========================================
+   GLASS UI — HEADER POLISH V12
+   ========================================= */
+
+.app-header {
+  padding-top: max(22px, env(safe-area-inset-top));
+  padding-bottom: 23px;
+  background-size: 180% 180%;
+  box-shadow: 0 14px 34px rgba(24, 54, 39, .19);
+}
+
+.brand {
+  font-size: 19px;
+  font-weight: 900;
+  letter-spacing: 1.1px;
+  text-shadow: 0 2px 12px rgba(0,0,0,.12);
+}
+
+.subtitle {
+  margin-top: 5px;
+  opacity: .88;
+  letter-spacing: .1px;
+}
+
+.header-icon,
+.theme-toggle {
+  transition:
+    transform .22s ease,
+    background .22s ease,
+    box-shadow .22s ease;
+}
+
+.header-icon {
+  border-radius: 16px;
+  padding: 9px;
+}
+
+.theme-toggle {
+  border-radius: 14px;
+}
+
+.header-icon:active,
+.theme-toggle:active {
+  transform: scale(.9) rotate(-5deg);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .header-icon:hover,
+  .theme-toggle:hover {
+    background: rgba(255,255,255,.2);
+    box-shadow: 0 5px 16px rgba(0,0,0,.12);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header-icon,
+  .theme-toggle {
+    transition: none !important;
+  }
+}
