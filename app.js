@@ -113,9 +113,17 @@ function showPage(pageId) {
     renderExpiredMedicines();
   }
 
-  if (pageId === "monthly") {
-    renderMonthlyMedicines();
-  }
+if (pageId === "monthly") {
+
+  $("#monthlyMonths").style.display = "block";
+  $("#monthlyMonthsTitle").style.display = "block";
+  $("#monthlyList").style.display = "none";
+  $("#monthlyBackButton").style.display = "none";
+
+  $("#monthFilter").value = "";
+
+  renderMonthlyMonths();
+}
 
 }
 
