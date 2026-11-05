@@ -1739,3 +1739,163 @@ body[data-theme="dark"] .bottom-nav {
     transition: none !important;
   }
 }
+
+
+/* =========================================
+   GLASS UI — PREMIUM CONTROLS V4
+   ========================================= */
+
+/* Primary buttons */
+.primary-btn {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.16);
+  border-radius: 16px;
+  background: linear-gradient(135deg, #315d45, #477b59);
+  color: #fff;
+  font-weight: 750;
+  box-shadow:
+    0 7px 18px rgba(40, 91, 59, .19),
+    inset 0 1px 0 rgba(255,255,255,.2);
+  transition:
+    transform .18s cubic-bezier(.2,.8,.2,1),
+    box-shadow .2s ease,
+    filter .2s ease;
+}
+
+.primary-btn:active {
+  transform: scale(.965) translateY(1px);
+  box-shadow: 0 3px 9px rgba(40, 91, 59, .16);
+  filter: brightness(.96);
+}
+
+/* Secondary buttons */
+.secondary-btn {
+  border: 1px solid color-mix(in srgb, var(--primary) 18%, var(--border));
+  border-radius: 15px;
+  background: color-mix(in srgb, var(--surface) 78%, transparent);
+  color: var(--primary);
+  font-weight: 700;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.4);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  transition:
+    transform .18s ease,
+    background .2s ease,
+    box-shadow .2s ease;
+}
+
+.secondary-btn:active {
+  transform: scale(.97);
+  background: var(--primary-light);
+}
+
+/* Form glass panels */
+.form-card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--border) 75%, transparent);
+  border-radius: 23px;
+  background: color-mix(in srgb, var(--surface) 84%, transparent);
+  box-shadow:
+    0 10px 28px rgba(30, 50, 38, .055),
+    inset 0 1px 0 rgba(255,255,255,.45);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  backdrop-filter: blur(20px) saturate(150%);
+}
+
+.form-card label {
+  font-weight: 700;
+  letter-spacing: -.1px;
+}
+
+.form-card input,
+.form-card textarea {
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--background) 78%, transparent);
+  box-shadow: inset 0 1px 3px rgba(0,0,0,.025);
+}
+
+.form-card input:focus,
+.form-card textarea:focus {
+  border-color: color-mix(in srgb, var(--primary) 60%, var(--border));
+  background: var(--surface);
+  box-shadow:
+    0 0 0 4px color-mix(in srgb, var(--primary) 9%, transparent),
+    0 3px 12px rgba(30, 70, 45, .05);
+}
+
+/* Premium edit dialog */
+.edit-dialog {
+  width: min(92%, 440px);
+  max-width: 440px;
+  max-height: 88vh;
+  padding: 0;
+  border: 1px solid rgba(255,255,255,.3);
+  border-radius: 26px;
+  background: transparent;
+  color: var(--text);
+  box-shadow: 0 25px 80px rgba(0,0,0,.24);
+  overflow: auto;
+  animation: dialogEnter .25s cubic-bezier(.2,.8,.2,1) both;
+}
+
+.edit-dialog[open] {
+  display: block;
+}
+
+.edit-dialog .form-card {
+  margin: 0;
+  border: 0;
+  border-radius: 26px;
+  box-shadow: none;
+}
+
+.edit-dialog::backdrop {
+  background: rgba(9, 20, 13, .48);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+
+@keyframes dialogEnter {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Dark glass surfaces */
+body[data-theme="dark"] .form-card {
+  background: rgba(35, 46, 39, .82);
+  border-color: rgba(255,255,255,.08);
+  box-shadow:
+    0 10px 28px rgba(0,0,0,.2),
+    inset 0 1px 0 rgba(255,255,255,.035);
+}
+
+body[data-theme="dark"] .form-card input,
+body[data-theme="dark"] .form-card textarea {
+  background: rgba(15, 23, 18, .45);
+  border-color: rgba(255,255,255,.1);
+  color: var(--text);
+}
+
+body[data-theme="dark"] .secondary-btn {
+  background: rgba(255,255,255,.045);
+  border-color: rgba(255,255,255,.1);
+}
+
+/* Motion accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .primary-btn,
+  .secondary-btn,
+  .edit-dialog {
+    animation: none !important;
+    transition: none !important;
+  }
+}
