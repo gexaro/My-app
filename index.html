@@ -4,101 +4,331 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-
-  <title>My First App</title>
-
-  <meta name="theme-color" content="#101827">
+  <meta name="theme-color" content="#102820">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="My App">
+
+  <title>Expiry Manager</title>
 
   <link rel="manifest" href="./manifest.json">
-
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      padding: 30px 20px;
-      font-family: -apple-system, sans-serif;
-      background: #101827;
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .app {
-      width: 100%;
-      max-width: 400px;
-      text-align: center;
-    }
-
-    h1 {
-      font-size: 30px;
-    }
-
-    p {
-      color: #b7c3d5;
-    }
-
-    button {
-      width: 100%;
-      padding: 17px;
-      margin-top: 15px;
-      border: none;
-      border-radius: 14px;
-      background: #3478f6;
-      color: white;
-      font-size: 17px;
-      font-weight: bold;
-    }
-
-    #result {
-      margin-top: 25px;
-      font-size: 22px;
-    }
-  </style>
+  <link rel="stylesheet" href="./style.css">
+  <link rel="apple-touch-icon" href="./icons/icon-192.png">
 </head>
 
 <body>
-  <main class="app">
-    <h1>تطبيقي الأول</h1>
-    <p>تجربة تطبيق ويب على الآيفون</p>
 
-    <button onclick="increase()">
-      اضغط هنا
-    </button>
+  <header class="app-header">
+    <div>
+      <div class="brand">EXPIRY MANAGER</div>
+      <div class="subtitle">إدارة ومتابعة صلاحية الأدوية</div>
+    </div>
+    <div class="header-icon">✚</div>
+  </header>
 
-    <div id="result">عدد الضغطات: 0</div>
+  <main class="container">
+
+    <!-- Dashboard -->
+    <section id="dashboard" class="page active">
+
+      <div class="welcome">
+        <h2>لوحة التحكم</h2>
+        <p>نظرة عامة على مخزون الأدوية</p>
+      </div>
+
+      <div class="stats-grid">
+
+        <div class="stat-card total">
+          <span>إجمالي الأدوية</span>
+          <strong id="totalCount">0</strong>
+        </div>
+
+        <div class="stat-card safe">
+          <span>صلاحية أكثر من 60 يوم</span>
+          <strong id="safeCount">0</strong>
+        </div>
+
+        <div class="stat-card warning">
+          <span>قريبة من الانتهاء</span>
+          <strong id="warningCount">0</strong>
+        </div>
+
+        <div class="stat-card expired">
+          <span>منتهية الصلاحية</span>
+          <strong id="expiredCount">0</strong>
+        </div>
+
+      </div>
+
+      <div class="section-heading">
+        <h3>حالة الأدوية</h3>
+      </div>
+
+      <div id="dashboardList" class="medicine-list">
+        <div class="empty-state">لا توجد أدوية مسجلة حالياً</div>
+      </div>
+
+      <button class="primary-btn" onclick="showPage('add')">
+        + إضافة أدوية جديدة
+      </button>
+
+    </section>
+
+
+    <!-- Add Medicine -->
+    <section id="add" class="page">
+
+      <div class="welcome">
+        <h2>إضافة دواء</h2>
+        <p>أدخل اسم الدواء واختر تاريخ انتهاء الصلاحية</p>
+      </div>
+
+      <form id="medicineForm" class="form-card">
+
+        <label for="medicineName">اسم الدواء</label>
+        <input
+          type="text"
+          id="medicineName"
+          placeholder="مثلاً Panadol 500 mg"
+          required
+        >
+
+        <label for="expiryDate">تاريخ انتهاء الصلاحية</label>
+        <input
+          type="date"
+          id="expiryDate"
+          required
+        >
+
+        <label for="medicineNotes">ملاحظات (اختياري)</label>
+        <textarea
+          id="medicineNotes"
+          placeholder="أدخل أي ملاحظات..."
+          rows="3"
+        ></textarea>
+
+        <button type="submit" class="primary-btn">
+          حفظ الدواء
+        </button>
+
+      </form>
+
+      <div class="section-heading">
+        <h3>إضافة جماعية</h3>
+      </div>
+
+      <div class="form-card">
+
+        <p class="help-text">
+          اختر تاريخ الانتهاء مرة واحدة، ثم اكتب أسماء الأدوية،
+          كل دواء في سطر مستقل.
+        </p>
+
+        <label for="bulkExpiryDate">تاريخ انتهاء المجموعة</label>
+        <input type="date" id="bulkExpiryDate">
+
+        <label for="bulkMedicines">أسماء الأدوية</label>
+        <textarea
+          id="bulkMedicines"
+          rows="7"
+          placeholder="Panadol 500 mg&#10;Augmentin 625 mg&#10;Nexium 40 mg"
+        ></textarea>
+
+        <button
+          type="button"
+          id="bulkAddBtn"
+          class="primary-btn"
+        >
+          إضافة جميع الأدوية
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- All Medicines -->
+    <section id="all" class="page">
+
+      <div class="welcome">
+        <h2>جميع الأدوية</h2>
+        <p>عرض وإدارة جميع الأدوية المسجلة</p>
+      </div>
+
+      <input
+        type="search"
+        id="searchInput"
+        placeholder="ابحث عن دواء..."
+      >
+
+      <div id="allMedicinesList" class="medicine-list">
+        <div class="empty-state">لا توجد أدوية</div>
+      </div>
+
+    </section>
+
+
+    <!-- Expiring Soon -->
+    <section id="soon" class="page">
+
+      <div class="welcome">
+        <h2>قريبة من الانتهاء</h2>
+        <p>الأدوية التي يتبقى على انتهائها 60 يوماً أو أقل</p>
+      </div>
+
+      <div id="soonList" class="medicine-list">
+        <div class="empty-state">لا توجد أدوية قريبة من الانتهاء</div>
+      </div>
+
+    </section>
+
+
+    <!-- Expired -->
+    <section id="expired" class="page">
+
+      <div class="welcome">
+        <h2>الأدوية المنتهية</h2>
+        <p>الأدوية التي تجاوزت تاريخ انتهاء صلاحيتها</p>
+      </div>
+
+      <div id="expiredList" class="medicine-list">
+        <div class="empty-state">لا توجد أدوية منتهية</div>
+      </div>
+
+    </section>
+
+
+    <!-- Monthly View -->
+    <section id="monthly" class="page">
+
+      <div class="welcome">
+        <h2>التصنيف الشهري</h2>
+        <p>اعرض الأدوية حسب شهر وسنة الانتهاء</p>
+      </div>
+
+      <label for="monthFilter">اختر الشهر</label>
+      <input type="month" id="monthFilter">
+
+      <div id="monthlyList" class="medicine-list">
+        <div class="empty-state">اختر الشهر لعرض الأدوية</div>
+      </div>
+
+    </section>
+
+
+    <!-- Backup -->
+    <section id="backup" class="page">
+
+      <div class="welcome">
+        <h2>النسخ الاحتياطي</h2>
+        <p>حافظ على بياناتك واستعدها عند الحاجة</p>
+      </div>
+
+      <div class="form-card">
+
+        <h3>تصدير البيانات</h3>
+        <p class="help-text">
+          إنشاء نسخة احتياطية من جميع الأدوية بصيغة JSON.
+        </p>
+
+        <button id="exportBtn" class="primary-btn">
+          تصدير نسخة احتياطية
+        </button>
+
+        <hr>
+
+        <h3>استعادة البيانات</h3>
+        <p class="help-text">
+          اختر ملف النسخة الاحتياطية لاستعادة الأدوية.
+        </p>
+
+        <input
+          type="file"
+          id="importFile"
+          accept=".json,application/json"
+        >
+
+        <button id="importBtn" class="secondary-btn">
+          استعادة النسخة الاحتياطية
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- Edit Dialog -->
+    <dialog id="editDialog" class="edit-dialog">
+
+      <form id="editForm" class="form-card">
+
+        <h3>تعديل بيانات الدواء</h3>
+
+        <input type="hidden" id="editId">
+
+        <label for="editName">اسم الدواء</label>
+        <input type="text" id="editName" required>
+
+        <label for="editDate">تاريخ الانتهاء</label>
+        <input type="date" id="editDate" required>
+
+        <label for="editNotes">ملاحظات</label>
+        <textarea id="editNotes" rows="3"></textarea>
+
+        <button type="submit" class="primary-btn">
+          حفظ التعديلات
+        </button>
+
+        <button
+          type="button"
+          class="secondary-btn"
+          onclick="document.getElementById('editDialog').close()"
+        >
+          إلغاء
+        </button>
+
+      </form>
+
+    </dialog>
+
   </main>
 
-  <script>
-    let count = Number(localStorage.getItem("count") || 0);
 
-    function update() {
-      document.getElementById("result").textContent =
-        "عدد الضغطات: " + count;
-    }
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
 
-    function increase() {
-      count++;
-      localStorage.setItem("count", count);
-      update();
-    }
+    <button onclick="showPage('dashboard')" class="nav-item active" data-page="dashboard">
+      <span>⌂</span>
+      <small>الرئيسية</small>
+    </button>
 
-    update();
+    <button onclick="showPage('add')" class="nav-item" data-page="add">
+      <span>＋</span>
+      <small>إضافة</small>
+    </button>
 
-    if ("serviceWorker" in navigator &&
-        location.protocol.startsWith("http")) {
-      window.addEventListener("load", () => {
-        navigator.serviceWorker.register("./sw.js")
-          .catch(error => console.log(error));
-      });
-    }
-  </script>
+    <button onclick="showPage('all')" class="nav-item" data-page="all">
+      <span>▤</span>
+      <small>الأدوية</small>
+    </button>
+
+    <button onclick="showPage('soon')" class="nav-item" data-page="soon">
+      <span>◷</span>
+      <small>قريباً</small>
+    </button>
+
+    <button onclick="showPage('backup')" class="nav-item" data-page="backup">
+      <span>⚙</span>
+      <small>البيانات</small>
+    </button>
+
+  </nav>
+
+
+  <div id="toast" class="toast"></div>
+
+  <script src="./db.js"></script>
+  <script src="./expiry.js"></script>
+  <script src="./app.js"></script>
+
 </body>
 </html>
