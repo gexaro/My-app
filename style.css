@@ -1899,3 +1899,148 @@ body[data-theme="dark"] .secondary-btn {
     transition: none !important;
   }
 }
+
+
+/* =========================================
+   GLASS UI — MEDICINE CARDS V5
+   ========================================= */
+
+/* Premium medicine cards */
+.medicine-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: 19px 17px;
+  border-radius: 22px;
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border) 75%, transparent);
+  box-shadow:
+    0 8px 25px rgba(25, 48, 34, .065),
+    inset 0 1px 0 rgba(255,255,255,.48);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  backdrop-filter: blur(18px) saturate(150%);
+  transition:
+    transform .22s cubic-bezier(.2,.8,.2,1),
+    box-shadow .22s ease,
+    border-color .22s ease;
+}
+
+.medicine-card::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,.55),
+    transparent
+  );
+  pointer-events: none;
+}
+
+.medicine-name {
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: -.2px;
+}
+
+.medicine-date {
+  line-height: 1.8;
+}
+
+/* Glass status badges */
+.status-badge {
+  border: 1px solid rgba(255,255,255,.22);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.3);
+}
+
+.status-safe {
+  background: rgba(84, 151, 108, .14);
+  color: var(--green);
+}
+
+.status-warning {
+  background: rgba(218, 157, 72, .16);
+  color: var(--orange);
+}
+
+.status-expired {
+  background: rgba(204, 91, 87, .14);
+  color: var(--red);
+}
+
+/* Refined action buttons */
+.medicine-actions {
+  border-top: 1px solid color-mix(in srgb, var(--border) 75%, transparent);
+}
+
+.medicine-actions button {
+  min-height: 42px;
+  border-radius: 13px;
+  transition:
+    transform .17s ease,
+    box-shadow .17s ease,
+    filter .17s ease;
+}
+
+.medicine-actions button:active {
+  transform: scale(.94);
+  filter: brightness(.96);
+}
+
+.medicine-actions .delete-btn {
+  border: 1px solid rgba(189, 98, 92, .12);
+}
+
+/* Subtle hover on devices that support it */
+@media (hover: hover) and (pointer: fine) {
+  .medicine-card:hover {
+    transform: translateY(-3px);
+    border-color: color-mix(in srgb, var(--primary) 24%, var(--border));
+    box-shadow:
+      0 13px 30px rgba(25, 48, 34, .09),
+      inset 0 1px 0 rgba(255,255,255,.5);
+  }
+
+  .medicine-actions button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(25, 48, 34, .08);
+  }
+}
+
+/* Dark mode */
+body[data-theme="dark"] .medicine-card {
+  background: rgba(35, 46, 39, .78);
+  border-color: rgba(255,255,255,.08);
+  box-shadow:
+    0 8px 25px rgba(0,0,0,.2),
+    inset 0 1px 0 rgba(255,255,255,.04);
+}
+
+body[data-theme="dark"] .medicine-card::after {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,.12),
+    transparent
+  );
+}
+
+body[data-theme="dark"] .status-badge {
+  border-color: rgba(255,255,255,.07);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .medicine-card,
+  .medicine-actions button {
+    transition: none !important;
+  }
+}
