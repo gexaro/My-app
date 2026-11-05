@@ -414,7 +414,9 @@ async function handleAddMedicine(event) {
 
   const name = $("#medicineName").value.trim();
 
-  const expiryDate = $("#expiryDate").value;
+const expiryDate = convertMonthToExpiryDate(
+  $("#expiryDate").value
+);
 
   const notes = $("#medicineNotes").value.trim();
 
