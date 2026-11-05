@@ -2693,3 +2693,54 @@ body[data-theme="dark"] #add > .form-card .help-text {
     scroll-behavior: auto;
   }
 }
+/* =========================================
+   GLASS UI — CSV PREVIEW V16
+   ========================================= */
+
+#csvPreview {
+  display: block;
+  margin-top: 18px;
+  padding: 17px;
+  min-height: 20px;
+  border: 1px solid var(--border);
+  border-radius: 17px;
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  color: var(--text);
+  font-size: 13px;
+  line-height: 2;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  direction: rtl;
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.3);
+}
+
+#confirmCsvImportBtn:disabled {
+  opacity: .42;
+  cursor: not-allowed;
+  filter: saturate(.5);
+  box-shadow: none;
+}
+
+#previewCsvBtn,
+#confirmCsvImportBtn {
+  width: 100%;
+  min-height: 49px;
+  margin-top: 13px;
+  border-radius: 15px;
+  font-weight: 800;
+}
+
+body[data-theme="dark"] #csvPreview {
+  background: rgba(25, 35, 29, .72);
+  border-color: rgba(255,255,255,.09);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.05);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #previewCsvBtn,
+  #confirmCsvImportBtn {
+    transition: none !important;
+  }
+}
