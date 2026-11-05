@@ -2186,3 +2186,80 @@ body[data-theme="dark"] .toast {
     filter: none !important;
   }
 }
+/* =========================================
+   GLASS UI — STATISTICS CARDS V8
+   ========================================= */
+
+.stat-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: 22px;
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--surface) 96%, white),
+      color-mix(in srgb, var(--surface) 82%, var(--primary-light))
+    );
+  box-shadow:
+    0 9px 25px rgba(35, 55, 42, .055),
+    inset 0 1px 0 rgba(255,255,255,.7);
+  transition:
+    transform .22s cubic-bezier(.2,.8,.2,1),
+    box-shadow .22s ease;
+}
+
+.stat-card::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  width: 95px;
+  height: 95px;
+  left: -35px;
+  bottom: -45px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--primary) 6%, transparent);
+  pointer-events: none;
+}
+
+.stat-card strong {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -.7px;
+  transition: transform .22s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow:
+      0 14px 30px rgba(35, 55, 42, .09),
+      inset 0 1px 0 rgba(255,255,255,.7);
+  }
+
+  .stat-card:hover strong {
+    transform: translateY(-2px);
+  }
+}
+
+body[data-theme="dark"] .stat-card {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(42, 55, 47, .95),
+      rgba(30, 40, 34, .88)
+    );
+  box-shadow:
+    0 9px 25px rgba(0,0,0,.18),
+    inset 0 1px 0 rgba(255,255,255,.045);
+}
+
+body[data-theme="dark"] .stat-card::after {
+  background: rgba(255,255,255,.035);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stat-card,
+  .stat-card strong {
+    transition: none !important;
+  }
+}
