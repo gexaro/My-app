@@ -2421,3 +2421,56 @@ body[data-theme="dark"] #monthlyMonths .secondary-btn {
     transition: none !important;
   }
 }
+/* =========================================
+   GLASS UI — SECTION HEADINGS V11
+   ========================================= */
+
+.section-heading {
+  display: flex;
+  align-items: center;
+  min-height: 30px;
+  padding-right: 15px;
+  margin: 30px 0 17px;
+}
+
+.section-heading::before {
+  width: 4px;
+  top: 2px;
+  bottom: 2px;
+  border-radius: 10px;
+  background: linear-gradient(
+    180deg,
+    var(--primary),
+    color-mix(in srgb, var(--primary) 35%, white)
+  );
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--primary) 18%, transparent);
+}
+
+.section-heading h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 850;
+  letter-spacing: -.35px;
+  line-height: 1.5;
+}
+
+.medicine-list {
+  gap: 14px;
+}
+
+@media (max-width: 360px) {
+  .section-heading {
+    margin: 24px 0 14px;
+  }
+
+  .medicine-list {
+    gap: 11px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section-heading,
+  .section-heading::before {
+    transition: none !important;
+  }
+}
