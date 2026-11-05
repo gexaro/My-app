@@ -879,3 +879,243 @@ button:active {
     animation: none !important;
   }
 }
+
+/* =========================================
+   EXPIRY MANAGER — DASHBOARD POLISH V4
+   ========================================= */
+
+/* Dashboard hero */
+#dashboard .welcome {
+  position: relative;
+  overflow: hidden;
+  padding: 25px 22px;
+  margin-bottom: 22px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, #203e31 0%, #365d47 100%);
+  box-shadow: 0 12px 28px rgba(32, 62, 49, .15);
+}
+
+#dashboard .welcome::after {
+  content: "";
+  position: absolute;
+  width: 155px;
+  height: 155px;
+  left: -48px;
+  top: -65px;
+  border: 1px solid rgba(255,255,255,.13);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 18px rgba(255,255,255,.035),
+    0 0 0 38px rgba(255,255,255,.025);
+  pointer-events: none;
+}
+
+#dashboard .welcome h2 {
+  position: relative;
+  z-index: 1;
+  color: #fffdf7;
+  font-size: 24px;
+}
+
+#dashboard .welcome p {
+  position: relative;
+  z-index: 1;
+  color: #d5e1d7;
+  font-size: 13px;
+}
+
+/* Statistics refinement */
+#dashboard .stats-grid {
+  gap: 12px;
+  margin-bottom: 30px;
+}
+
+#dashboard .stat-card {
+  min-height: 116px;
+  justify-content: space-between;
+  padding: 18px 16px;
+  border-radius: 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-right-width: 3px;
+}
+
+#dashboard .stat-card span {
+  font-size: 12px;
+  font-weight: 650;
+  line-height: 1.7;
+}
+
+#dashboard .stat-card strong {
+  font-size: 32px;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+#dashboard .stat-card.total {
+  border-right-color: #9caa9e;
+}
+
+#dashboard .stat-card.safe {
+  border-right-color: var(--green);
+}
+
+#dashboard .stat-card.warning {
+  border-right-color: var(--orange);
+}
+
+#dashboard .stat-card.expired {
+  border-right-color: var(--red);
+}
+
+/* Section headings */
+.section-heading {
+  position: relative;
+  padding-right: 13px;
+  margin: 27px 0 16px;
+}
+
+.section-heading::before {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 3px;
+  bottom: 3px;
+  width: 3px;
+  border-radius: 5px;
+  background: var(--primary);
+}
+
+.section-heading h3 {
+  font-size: 16px;
+  letter-spacing: -.2px;
+}
+
+/* Dashboard action */
+#dashboard > .primary-btn {
+  margin-top: 20px;
+  min-height: 53px;
+}
+
+/* Medicine cards */
+.medicine-card {
+  border-radius: 19px;
+  padding: 17px;
+}
+
+.medicine-top {
+  align-items: center;
+}
+
+.medicine-name {
+  line-height: 1.7;
+}
+
+.medicine-date {
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.medicine-actions {
+  gap: 10px;
+}
+
+.medicine-actions button {
+  min-height: 38px;
+  padding: 9px 16px;
+  border-radius: 11px;
+}
+
+/* Search and month filters */
+#searchInput,
+#monthFilter {
+  margin-bottom: 17px;
+}
+
+#searchInput {
+  min-height: 51px;
+}
+
+/* Form refinement */
+.form-card h3 {
+  font-size: 17px;
+  margin-top: 3px;
+}
+
+.form-card .help-text {
+  line-height: 1.9;
+}
+
+input,
+textarea {
+  min-height: 49px;
+}
+
+textarea {
+  min-height: 90px;
+}
+
+/* Bottom navigation refinement */
+.bottom-nav {
+  min-height: 68px;
+}
+
+.nav-item {
+  min-width: 0;
+  padding: 5px 2px;
+}
+
+.nav-item.active {
+  font-weight: 800;
+}
+
+.nav-item.active small {
+  font-weight: 800;
+}
+
+/* Toast refinement */
+.toast {
+  border: 1px solid rgba(255,255,255,.12);
+  box-shadow: 0 8px 25px rgba(0,0,0,.16);
+  backdrop-filter: blur(12px);
+}
+
+/* Dark mode dashboard */
+body[data-theme="dark"] #dashboard .welcome {
+  background: linear-gradient(135deg, #263c30 0%, #354c3c 100%);
+  box-shadow: 0 12px 28px rgba(0,0,0,.2);
+}
+
+body[data-theme="dark"] #dashboard .welcome h2 {
+  color: #f5f0e5;
+}
+
+body[data-theme="dark"] #dashboard .welcome p {
+  color: #c4d0c5;
+}
+
+body[data-theme="dark"] .medicine-actions .delete-btn {
+  background: rgba(189, 98, 92, .13);
+  color: var(--red);
+}
+
+/* Small iPhone screens */
+@media (max-width: 380px) {
+  #dashboard .stat-card {
+    padding: 16px 12px;
+    min-height: 108px;
+  }
+
+  #dashboard .stat-card span {
+    font-size: 11px;
+  }
+
+  #dashboard .stat-card strong {
+    font-size: 29px;
+  }
+
+  .container {
+    padding-right: 14px;
+    padding-left: 14px;
+  }
+}
