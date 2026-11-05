@@ -1492,3 +1492,131 @@ textarea {
     transition: none !important;
   }
 }
+
+
+/* =========================================
+   GLASS UI — DASHBOARD POLISH V2
+   ========================================= */
+
+/* Glass welcome panels */
+.welcome {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: 19px 18px;
+  margin-bottom: 20px;
+  border: 1px solid color-mix(in srgb, var(--border) 75%, transparent);
+  border-radius: 22px;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--surface) 94%, var(--primary) 6%),
+    color-mix(in srgb, var(--surface) 84%, var(--primary) 16%)
+  );
+  box-shadow:
+    0 8px 24px rgba(30, 50, 38, .045),
+    inset 0 1px 0 rgba(255,255,255,.45);
+}
+
+.welcome::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  width: 115px;
+  height: 115px;
+  left: -38px;
+  top: -48px;
+  border: 1px solid color-mix(in srgb, var(--primary) 12%, transparent);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 15px color-mix(in srgb, var(--primary) 3%, transparent),
+    0 0 0 32px color-mix(in srgb, var(--primary) 2%, transparent);
+  pointer-events: none;
+}
+
+.welcome h2 {
+  font-size: 21px;
+  letter-spacing: -.3px;
+}
+
+.welcome p {
+  line-height: 1.8;
+}
+
+body[data-theme="dark"] .welcome {
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--surface) 92%, white 8%),
+    color-mix(in srgb, var(--surface) 96%, var(--primary) 4%)
+  );
+  box-shadow:
+    0 8px 24px rgba(0,0,0,.13),
+    inset 0 1px 0 rgba(255,255,255,.035);
+}
+
+/* Refined glass search */
+.search-wrapper {
+  margin-bottom: 20px;
+}
+
+.search-wrapper input {
+  min-height: 52px;
+  padding-right: 16px;
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  border: 1px solid var(--border);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.35);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+}
+
+.search-wrapper input:focus {
+  border-color: color-mix(in srgb, var(--primary) 55%, var(--border));
+  box-shadow:
+    0 0 0 4px color-mix(in srgb, var(--primary) 9%, transparent),
+    inset 0 1px 0 rgba(255,255,255,.35);
+}
+
+.clear-search-btn {
+  background: color-mix(in srgb, var(--primary-light) 85%, transparent);
+  color: var(--text);
+}
+
+/* Dashboard cards entrance */
+.stat-card {
+  animation: statCardEnter .42s cubic-bezier(.2,.75,.25,1) both;
+}
+
+.stat-card:nth-child(1) { animation-delay: .03s; }
+.stat-card:nth-child(2) { animation-delay: .09s; }
+.stat-card:nth-child(3) { animation-delay: .15s; }
+.stat-card:nth-child(4) { animation-delay: .21s; }
+
+@keyframes statCardEnter {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Clear focus feedback */
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--primary) 65%, transparent);
+  outline-offset: 3px;
+}
+
+/* Reduced motion accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .welcome,
+  .stat-card,
+  .medicine-card,
+  .page.active {
+    animation: none !important;
+    transition: none !important;
+  }
+}
