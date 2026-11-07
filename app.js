@@ -283,7 +283,133 @@ async function renderDashboard() {
   }
 
 }
+/* =========================================
+   Reports & Statistics
+========================================= */
 
+async function renderReports() {
+  try {
+    const medicines = await getAllMedicines();
+    const list = medicines.map(enrichMedicine);
+
+    const count = (condition) =>
+      list.filter(condition).length;
+
+    $("#reportTotal").textContent = list.length;
+
+    $("#reportExpired").textContent =
+      count(m => m.statusKey === "expired");
+
+    $("#report30Days").textContent =
+      count(m => m.daysRemaining >= 0 && m.daysRemaining <= 30);
+
+    $("#report60Days").textContent =
+      count(m => m.daysRemaining >= 0 && m.daysRemaining <= 60);
+
+    $("#report90Days").textContent =
+      count(m => m.daysRemaining >= 0 && m.daysRemaining <= 90);
+
+    $("#reportInvalid").textContent =
+      count(m => m.statusKey === "invalid");
+
+    function drawChart(containerId, items) {
+      const container = $("#" + containerId);
+      container.replaceChildren();
+
+      const max = Math.max(1, ...items.map(item => item.value));
+
+      items.forEach(item => {
+        const row = document.createElement("div");
+        row.style.marginBottom = "14px";
+
+        const label = document.createElement("div");
+        label.textContent = `${item.label} — ${item.value}`;
+        label.style.marginBottom = "6px";
+
+        const track = document.createElement("div");
+        track.style.height = "10px";
+        track.style.background = "var(--border-color, #ddd)";
+        track.style.borderRadius = "20px";
+        track.style.overflow = "hidden";
+
+        const bar = document.createElement("div");
+        bar.style.height = "100%";
+        bar.style.width = (item.value / max * 100) + "%";
+        bar.style.background = item.color || "var(--primary-color, #5686d8)";
+        bar.style.borderRadius = "20px";
+
+        track.append(bar);
+        row.append(label, track);
+        container.append(row);
+      });
+    }
+
+    drawChart("reportStatusChart", [
+      { label: "سليم", value: count(m => m.statusKey === "safe"), color: "#22a06b" },
+      { label: "قريب الانتهاء", value: count(m => ["warning", "critical", "today"].includes(m.statusKey)), color: "#e6a23c" },
+      { label: "منتهي", value: count(m => m.statusKey === "expired"), color: "#e05252" },
+      { label: "تاريخ غير صالح", value: count(m => m.statusKey === "invalid"), color: "#888888" }
+    ]);
+
+    const months = {};
+
+    medicines.forEach(medicine => {
+      const month = medicine.expiryMonth || "";
+      if (month) {
+        months[month] = (months[month] || 0) + 1;
+      }
+    });
+
+    const monthlyItems = Object.keys(months)
+      .sort()
+      .map(month => ({
+        label: month,
+        value: months[month]
+      }));
+
+    drawChart("reportMonthlyChart", monthlyItems);
+
+    $("#exportReportCsv").onclick = async function() {
+      const rows = [
+        ["اسم الدواء", "تاريخ الانتهاء", "الحالة", "الأيام المتبقية"],
+        ...list.map(m => [
+          m.name,
+          m.expiryDate,
+          m.statusLabel,
+          m.daysRemaining ?? "غير صالح"
+        ])
+      ];
+
+      const csv = "\uFEFF" + rows.map(row =>
+        row.map(value =>
+          '"' + String(value ?? "").replace(/"/g, '""') + '"'
+        ).join(",")
+      ).join("\n");
+
+      const blob = new Blob([csv], {
+        type: "text/csv;charset=utf-8;"
+      });
+
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+
+      link.href = url;
+      link.download = "Pharmacy-Report.csv";
+      link.click();
+
+      URL.revokeObjectURL(url);
+      showToast("تم تصدير التقرير");
+    };
+
+    $("#printReport").onclick = function() {
+      window.print();
+    };
+
+  } catch (error) {
+    console.error(error);
+    showToast("تعذر تحميل التقارير");
+  }
+}
 
 /* =========================================
    6. All Medicines
