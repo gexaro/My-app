@@ -1120,7 +1120,7 @@ background: linear-gradient(135deg, #202E46 0%, #293F66 100%);
 }
 
 body[data-theme="dark"] #dashboard .welcome h2 {
-  color: #f5f0e5;
+color: #F1F5FC;
 }
 
 body[data-theme="dark"] #dashboard .welcome p {
