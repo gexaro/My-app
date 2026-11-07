@@ -496,6 +496,19 @@ hr {
   --red: #D85B63;
   --shadow: 0 8px 28px rgba(36, 87, 166, .07);
   --luxury-radius: 22px;
+}/* Dark theme foundation */
+body[data-theme="dark"] {
+  --primary: #82A9E8;
+  --primary-light: #263B59;
+  --background: #172235;
+  --surface: #213149;
+  --text: #EDF3FC;
+  --muted: #A8B7CC;
+  --border: #35465D;
+  --green: #75B99A;
+  --orange: #E0AD69;
+  --red: #E58A8F;
+  --shadow: 0 8px 28px rgba(0, 0, 0, .18);
 }
 
 /* Global smoothness */
