@@ -1385,7 +1385,51 @@ async function initializeApp() {
   try {
 
     await initializeDatabase();
+document.querySelectorAll("[data-dashboard-stat]").forEach(function(card) {
 
+  async function openDetails() {
+    const type = card.dataset.dashboardStat;
+
+    if (type === "warning") {
+      showPage("soon");
+      return;
+    }
+
+    if (type === "expired") {
+      showPage("expired");
+      return;
+    }
+
+    showPage("all");
+
+    const title = document.querySelector("#all .welcome h2");
+
+    if (type === "safe") {
+      title.textContent = "الأدوية السليمة";
+
+      const medicines = await getAllMedicines();
+
+      renderMedicineList(
+        $("#allMedicinesList"),
+        getSafeMedicines(medicines),
+        "لا توجد أدوية سليمة حالياً"
+      );
+
+    } else {
+      title.textContent = "جميع الأدوية";
+    }
+  }
+
+  card.addEventListener("click", openDetails);
+
+  card.addEventListener("keydown", function(event) {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      openDetails();
+    }
+  });
+
+});
 
      $("#previewCsvBtn").addEventListener(
   "click",
