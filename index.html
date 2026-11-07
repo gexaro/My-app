@@ -388,22 +388,22 @@
     <div id="reportMonthlyChart"></div>
   </div>
 
-  <div class="form-card report-card report-details-card" id="reportDetails">
-    <div class="report-details-header">
-      <div>
-        <h3 id="reportDetailsTitle">تفاصيل المخزون</h3>
-        <p id="reportDetailsCount">اختر أي بطاقة أو رسم لعرض التفاصيل</p>
-      </div>
-      <button type="button" id="clearReportFilter" class="secondary-btn">
-        إلغاء التصفية
-      </button>
-    </div>
+<div id="reportListView" class="report-list-view" hidden>
 
-    <div id="reportDetailsList">
-      <p>ستظهر هنا تفاصيل الأدوية عند اختيار أحد المؤشرات.</p>
+  <button type="button" id="reportBackButton" class="secondary-btn report-back-button">
+    ← رجوع للإحصائيات
+  </button>
+
+  <div class="welcome report-header">
+    <div>
+      <h2 id="reportListTitle">قائمة الأدوية</h2>
+      <p id="reportListCount">0 دواء</p>
     </div>
   </div>
 
+  <div id="reportListContainer" class="medicine-list"></div>
+
+</div>
   <div class="form-card report-card">
     <h3>تصدير التقارير</h3>
     <p>احتفظ بنسخة من بيانات وتحليلات المخزون</p>
