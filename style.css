@@ -3037,3 +3037,52 @@ html {
     transition: none;
   }
 }
+/* =========================================
+   Professional Reports UI
+========================================= */
+
+#reports .stats-grid {
+  margin-bottom: 22px;
+}
+
+#reports .stat-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+#reports .stat-card:active {
+  transform: scale(0.97);
+}
+
+#reportStatusChart,
+#reportMonthlyChart {
+  padding: 18px;
+  margin: 12px 0 22px;
+  border: 1px solid var(--border-color);
+  border-radius: 18px;
+  background: var(--card-bg);
+  overflow: hidden;
+}
+
+#reportStatusChart > div,
+#reportMonthlyChart > div {
+  animation: reportBarEnter 0.45s ease both;
+}
+
+@keyframes reportBarEnter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#reports button {
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+#reports button:active {
+  transform: scale(0.97);
+}
