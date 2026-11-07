@@ -54,90 +54,98 @@
 
   <main class="container">
 
-    <!-- Dashboard -->
-    <section id="dashboard" class="page active">
+<!-- Dashboard -->
+<section id="dashboard" class="page active">
 
-<div class="welcome">
-  <div class="dashboard-title-row">
-    <h2 id="pharmacyName">صيدلية دكتور محمد عماد كامل</h2>
+  <div class="welcome">
+    <div class="dashboard-title-row">
+      <h2 id="pharmacyName">صيدلية دكتور محمد عماد كامل</h2>
+
+      <button
+        type="button"
+        id="editPharmacyNameBtn"
+        class="edit-pharmacy-name-btn"
+        aria-label="تعديل اسم الصيدلية"
+        title="تعديل الاسم"
+      >
+        <svg viewBox="0 0 24 24" width="18" height="18"
+          fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 20h9"/>
+          <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L8 18l-4 1 1-4Z"/>
+        </svg>
+      </button>
+    </div>
+
+    <p>نظرة عامة على مخزون الأدوية</p>
+  </div>
+
+  <!-- Reports Button -->
+  <button class="secondary-btn" onclick="showPage('reports')">
+    <span>▥</span> التقارير والإحصائيات
+  </button>
+
+  <!-- Home Search -->
+  <div class="home-search search-wrapper">
+    <input
+      type="search"
+      id="homeSearchInput"
+      placeholder="ابحث عن اسم الدواء..."
+      autocomplete="off"
+    >
+
     <button
       type="button"
-      id="editPharmacyNameBtn"
-      class="edit-pharmacy-name-btn"
-      aria-label="تعديل اسم الصيدلية"
-      title="تعديل الاسم"
-    >
-      <svg viewBox="0 0 24 24" width="18" height="18"
-        fill="none" stroke="currentColor" stroke-width="2"
-        stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 20h9"/>
-        <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L8 18l-4 1 1-4Z"/>
-      </svg>
-    </button>
+      class="clear-search-btn"
+      data-target="homeSearchInput"
+      aria-label="مسح البحث"
+      style="display:none;"
+    >×</button>
   </div>
-  <p>نظرة عامة على مخزون الأدوية</p>
-</div>
-<div class="home-search search-wrapper">
-  <input
-    type="search"
-    id="homeSearchInput"
-    placeholder="ابحث عن اسم الدواء..."
-    autocomplete="off"
-  >
-  <button
-    type="button"
-    class="clear-search-btn"
-    data-target="homeSearchInput"
-    aria-label="مسح البحث"
+
+  <div
+    id="homeSearchResults"
+    class="medicine-list"
     style="display:none;"
-  >×</button>
-</div>
+  ></div>
 
-      <div
-        id="homeSearchResults"
-        class="medicine-list"
-        style="display:none;"
-      ></div>
-      <div class="stats-grid">
+  <div class="stats-grid">
 
-        <div class="stat-card total">
-          <span>إجمالي الأدوية</span>
-          <strong id="totalCount">0</strong>
-        </div>
+    <div class="stat-card total">
+      <span>إجمالي الأدوية</span>
+      <strong id="totalCount">0</strong>
+    </div>
 
-        <div class="stat-card safe">
-          <span>صلاحية أكثر من 60 يوم</span>
-          <strong id="safeCount">0</strong>
-        </div>
+    <div class="stat-card safe">
+      <span>صلاحية أكثر من 60 يوم</span>
+      <strong id="safeCount">0</strong>
+    </div>
 
-        <div class="stat-card warning">
-          <span>قريبة من الانتهاء</span>
-          <strong id="warningCount">0</strong>
-        </div>
+    <div class="stat-card warning">
+      <span>قريبة من الانتهاء</span>
+      <strong id="warningCount">0</strong>
+    </div>
 
-        <div class="stat-card expired">
-          <span>منتهية الصلاحية</span>
-          <strong id="expiredCount">0</strong>
-        </div>
+    <div class="stat-card expired">
+      <span>منتهية الصلاحية</span>
+      <strong id="expiredCount">0</strong>
+    </div>
 
-      </div>
+  </div>
 
-      <div class="section-heading">
-        <h3>حالة الأدوية</h3>
-      </div>
+  <div class="section-heading">
+    <h3>حالة الأدوية</h3>
+  </div>
 
-      <div id="dashboardList" class="medicine-list">
-        <div class="empty-state">لا توجد أدوية مسجلة حالياً</div>
-      </div>
+  <div id="dashboardList" class="medicine-list">
+    <div class="empty-state">لا توجد أدوية مسجلة حالياً</div>
+  </div>
 
-      <button class="primary-btn" onclick="showPage('add')">
-        + إضافة أدوية جديدة
-      </button>
-<button class="secondary-btn" onclick="showPage('reports')">
-  <span>▥</span> التقارير والإحصائيات
-</button>
-    </section>
+  <button class="primary-btn" onclick="showPage('add')">
+    + إضافة أدوية جديدة
+  </button>
 
+</section>
 
     <!-- Add Medicine -->
     <section id="add" class="page">
