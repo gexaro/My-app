@@ -422,7 +422,7 @@ color: "var(--safe)"
       {
         label: "قريب الانتهاء",
         value: count(filters.warning),
-        color: "#e6a23c"
+color: "var(--warning)"
       },
       {
         label: "منتهي",
