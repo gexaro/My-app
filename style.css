@@ -1115,7 +1115,7 @@ textarea {
 
 /* Dark mode dashboard */
 body[data-theme="dark"] #dashboard .welcome {
-  background: linear-gradient(135deg, #263c30 0%, #354c3c 100%);
+background: linear-gradient(135deg, #202E46 0%, #293F66 100%);
   box-shadow: 0 12px 28px rgba(0,0,0,.2);
 }
 
