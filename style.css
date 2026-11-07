@@ -543,7 +543,7 @@ button, input, textarea, .stat-card,
 background: linear-gradient(135deg, #2456C8, #4D79E5);
   padding: calc(27px + env(safe-area-inset-top)) 23px 27px;
   border-radius: 0 0 28px 28px;
-  box-shadow: 0 10px 30px rgba(30, 57, 42, .16);
+box-shadow: 0 10px 30px rgba(36, 86, 200, .16);
 }
 
 .brand {
