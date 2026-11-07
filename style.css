@@ -387,7 +387,7 @@ textarea {
   flex: 1;
   border: none;
   background: transparent;
-  color: #89958e;
+color: var(--muted);
   display: flex;
   flex-direction: column;
   align-items: center;
