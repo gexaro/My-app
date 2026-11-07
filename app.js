@@ -470,16 +470,6 @@ async function renderReports() {
           (medicine.expiryDate || "").slice(0, 7)) === month;
     });
 
-    $("#clearReportFilter").onclick = () => {
-      showDetails(
-        "كل الأدوية",
-        scopedList
-      );
-    };
-
-    $("#reportPeriod").onchange = () => {
-      renderReports();
-    };
 
     $("#exportReportCsv").onclick = async function() {
       const rows = [
