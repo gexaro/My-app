@@ -390,7 +390,7 @@ async function renderReports() {
 
         const track = document.createElement("div");
         track.style.height = "12px";
-        track.style.background = "var(--border-color, #ddd)";
+track.style.background = "var(--border, #D8DEE9)";
         track.style.borderRadius = "20px";
         track.style.overflow = "hidden";
 
