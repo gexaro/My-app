@@ -684,7 +684,7 @@ background: linear-gradient(135deg, #2456C8, #4D79E5);
   color: #fffdf8;
   border-radius: 16px;
   padding: 16px;
-  box-shadow: 0 7px 17px rgba(36, 70, 56, .16);
+box-shadow: 0 7px 17px rgba(36, 86, 200, .18);
 }
 
 .secondary-btn {
