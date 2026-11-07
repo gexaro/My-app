@@ -1386,11 +1386,7 @@ async function initializeApp() {
 
     await initializeDatabase();
 
-makeStatCardClickable(
-  document.querySelector(".stat-card.expired"),
-  "expired",
-  "عرض الأدوية منتهية الصلاحية"
-);
+
      $("#previewCsvBtn").addEventListener(
   "click",
   previewCsvImport
