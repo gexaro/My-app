@@ -1124,7 +1124,7 @@ color: #F1F5FC;
 }
 
 body[data-theme="dark"] #dashboard .welcome p {
-  color: #c4d0c5;
+color: var(--muted);
 }
 
 body[data-theme="dark"] .medicine-actions .delete-btn {
