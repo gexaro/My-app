@@ -296,14 +296,22 @@ async function renderReports() {
     const medicines = await getAllMedicines();
     const list = medicines.map(enrichMedicine);
 
-    const period = $("#reportPeriod")?.value || "all";
-    const horizon = period === "all" ? Infinity : Number(period);
+<div id="reportListView" class="report-list-view" hidden>
 
-    const scopedList = list.filter(m =>
-      period === "all" ||
-      (m.daysRemaining >= 0 && m.daysRemaining <= horizon)
-    );
+  <button type="button" id="reportBackButton" class="secondary-btn report-back-button">
+    ← رجوع للإحصائيات
+  </button>
 
+  <div class="welcome report-header">
+    <div>
+      <h2 id="reportListTitle">قائمة الأدوية</h2>
+      <p id="reportListCount">0 دواء</p>
+    </div>
+  </div>
+
+  <div id="reportListContainer" class="medicine-list"></div>
+
+</div>
     const isWarning = m =>
       ["warning", "critical", "today"].includes(m.statusKey);
 
