@@ -324,23 +324,29 @@ async function renderReports() {
     $("#report90Days").textContent = count(filters.next90);
     $("#reportInvalid").textContent = count(filters.invalid);
 
+    const reportOverviewElements = Array.from($("#reports").children)
+      .filter(el => el !== $("#reportListView"));
+
     function showDetails(title, filtered) {
-      $("#reportDetailsTitle").textContent = title;
-      $("#reportDetailsCount").textContent =
-        `${filtered.length} دواء`;
+      $("#reportListTitle").textContent = title;
+      $("#reportListCount").textContent = `${filtered.length} دواء`;
 
       renderMedicineList(
-        $("#reportDetailsList"),
+        $("#reportListContainer"),
         filtered,
         "لا توجد أدوية ضمن هذا التصنيف"
       );
 
-      $("#reportDetails").scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-      });
+      reportOverviewElements.forEach(el => el.hidden = true);
+      $("#reportListView").hidden = false;
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
+    $("#reportBackButton").onclick = () => {
+      $("#reportListView").hidden = true;
+      reportOverviewElements.forEach(el => el.hidden = false);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    };
     document.querySelectorAll("[data-report-filter]").forEach(card => {
       const filter = card.dataset.reportFilter;
 
