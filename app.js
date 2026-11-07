@@ -296,42 +296,100 @@ async function renderReports() {
     const medicines = await getAllMedicines();
     const list = medicines.map(enrichMedicine);
 
-    const count = (condition) =>
-      list.filter(condition).length;
+    const period = $("#reportPeriod")?.value || "all";
+    const horizon = period === "all" ? Infinity : Number(period);
 
-    $("#reportTotal").textContent = list.length;
+    const scopedList = list.filter(m =>
+      period === "all" ||
+      (m.daysRemaining >= 0 && m.daysRemaining <= horizon)
+    );
 
-    $("#reportExpired").textContent =
-      count(m => m.statusKey === "expired");
+    const isWarning = m =>
+      ["warning", "critical", "today"].includes(m.statusKey);
 
-    $("#report30Days").textContent =
-      count(m => m.daysRemaining >= 0 && m.daysRemaining <= 30);
+    const filters = {
+      all: m => true,
+      safe: m => m.statusKey === "safe",
+      expired: m => m.statusKey === "expired",
+      warning: isWarning,
+      invalid: m => m.statusKey === "invalid",
+      next30: m => m.daysRemaining >= 0 && m.daysRemaining <= 30,
+      next60: m => m.daysRemaining >= 0 && m.daysRemaining <= 60,
+      next90: m => m.daysRemaining >= 0 && m.daysRemaining <= 90
+    };
 
-    $("#report60Days").textContent =
-      count(m => m.daysRemaining >= 0 && m.daysRemaining <= 60);
+    const count = condition =>
+      scopedList.filter(condition).length;
 
-    $("#report90Days").textContent =
-      count(m => m.daysRemaining >= 0 && m.daysRemaining <= 90);
+    $("#reportTotal").textContent = scopedList.length;
+    $("#reportSafe").textContent = count(filters.safe);
+    $("#reportExpired").textContent = count(filters.expired);
+    $("#reportWarning").textContent = count(filters.warning);
+    $("#report30Days").textContent = count(filters.next30);
+    $("#report60Days").textContent = count(filters.next60);
+    $("#report90Days").textContent = count(filters.next90);
+    $("#reportInvalid").textContent = count(filters.invalid);
 
-    $("#reportInvalid").textContent =
-      count(m => m.statusKey === "invalid");
+    function showDetails(title, filtered) {
+      $("#reportDetailsTitle").textContent = title;
+      $("#reportDetailsCount").textContent =
+        `${filtered.length} دواء`;
 
-    function drawChart(containerId, items) {
+      renderMedicineList(
+        $("#reportDetailsList"),
+        filtered,
+        "لا توجد أدوية ضمن هذا التصنيف"
+      );
+
+      $("#reportDetails").scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    }
+
+    document.querySelectorAll("[data-report-filter]").forEach(card => {
+      const filter = card.dataset.reportFilter;
+
+      const open = () => {
+        const filtered = scopedList.filter(filters[filter]);
+        showDetails(card.querySelector("span").textContent, filtered);
+      };
+
+      card.onclick = open;
+
+      card.onkeydown = event => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          open();
+        }
+      };
+    });
+
+    function drawChart(containerId, items, filterKey) {
       const container = $("#" + containerId);
       container.replaceChildren();
 
       const max = Math.max(1, ...items.map(item => item.value));
 
       items.forEach(item => {
-        const row = document.createElement("div");
-        row.style.marginBottom = "14px";
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "report-chart-item";
+        button.style.display = "block";
+        button.style.width = "100%";
+        button.style.textAlign = "right";
+        button.style.marginBottom = "14px";
+        button.style.background = "transparent";
+        button.style.border = "0";
+        button.style.color = "inherit";
+        button.style.cursor = "pointer";
 
         const label = document.createElement("div");
         label.textContent = `${item.label} — ${item.value}`;
         label.style.marginBottom = "6px";
 
         const track = document.createElement("div");
-        track.style.height = "10px";
+        track.style.height = "12px";
         track.style.background = "var(--border-color, #ddd)";
         track.style.borderRadius = "20px";
         track.style.overflow = "hidden";
@@ -341,24 +399,58 @@ async function renderReports() {
         bar.style.width = (item.value / max * 100) + "%";
         bar.style.background = item.color || "var(--primary-color, #5686d8)";
         bar.style.borderRadius = "20px";
+        bar.style.transition = "width .4s ease";
 
         track.append(bar);
-        row.append(label, track);
-        container.append(row);
+        button.append(label, track);
+
+        button.onclick = () => {
+          const filtered = scopedList.filter(filterKey(item));
+          showDetails(item.label, filtered);
+        };
+
+        container.append(button);
       });
     }
 
     drawChart("reportStatusChart", [
-      { label: "سليم", value: count(m => m.statusKey === "safe"), color: "#22a06b" },
-      { label: "قريب الانتهاء", value: count(m => ["warning", "critical", "today"].includes(m.statusKey)), color: "#e6a23c" },
-      { label: "منتهي", value: count(m => m.statusKey === "expired"), color: "#e05252" },
-      { label: "تاريخ غير صالح", value: count(m => m.statusKey === "invalid"), color: "#888888" }
-    ]);
+      {
+        label: "سليم",
+        value: count(filters.safe),
+        color: "#22a06b"
+      },
+      {
+        label: "قريب الانتهاء",
+        value: count(filters.warning),
+        color: "#e6a23c"
+      },
+      {
+        label: "منتهي",
+        value: count(filters.expired),
+        color: "#e05252"
+      },
+      {
+        label: "تاريخ غير صالح",
+        value: count(filters.invalid),
+        color: "#888888"
+      }
+    ], item => {
+      const map = {
+        "سليم": filters.safe,
+        "قريب الانتهاء": filters.warning,
+        "منتهي": filters.expired,
+        "تاريخ غير صالح": filters.invalid
+      };
+      return map[item.label];
+    });
 
     const months = {};
 
-    medicines.forEach(medicine => {
-      const month = medicine.expiryMonth || "";
+    scopedList.forEach(medicine => {
+      const month =
+        medicine.expiryMonth ||
+        (medicine.expiryDate || "").slice(0, 7);
+
       if (month) {
         months[month] = (months[month] || 0) + 1;
       }
@@ -371,12 +463,28 @@ async function renderReports() {
         value: months[month]
       }));
 
-    drawChart("reportMonthlyChart", monthlyItems);
+    drawChart("reportMonthlyChart", monthlyItems, item => {
+      const month = item.label;
+      return medicine =>
+        (medicine.expiryMonth ||
+          (medicine.expiryDate || "").slice(0, 7)) === month;
+    });
+
+    $("#clearReportFilter").onclick = () => {
+      showDetails(
+        "كل الأدوية",
+        scopedList
+      );
+    };
+
+    $("#reportPeriod").onchange = () => {
+      renderReports();
+    };
 
     $("#exportReportCsv").onclick = async function() {
       const rows = [
         ["اسم الدواء", "تاريخ الانتهاء", "الحالة", "الأيام المتبقية"],
-        ...list.map(m => [
+        ...scopedList.map(m => [
           m.name,
           m.expiryDate,
           m.statusLabel,
@@ -405,9 +513,11 @@ async function renderReports() {
       showToast("تم تصدير التقرير");
     };
 
-    $("#printReport").onclick = function() {
+    $("#printReport").onclick = () => {
       window.print();
     };
+
+    showDetails("كل الأدوية", scopedList);
 
   } catch (error) {
     console.error(error);
