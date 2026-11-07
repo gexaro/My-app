@@ -507,8 +507,6 @@ async function renderReports() {
       window.print();
     };
 
-$("#reportDetailsTitle").textContent = "تفاصيل المخزون";
-$("#reportDetailsCount").textContent = "اختر بطاقة أو رسماً لعرض الأدوية";
 
   } catch (error) {
     console.error(error);
