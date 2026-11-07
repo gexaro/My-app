@@ -427,7 +427,7 @@ color: "var(--warning)"
       {
         label: "منتهي",
         value: count(filters.expired),
-        color: "#e05252"
+color: "var(--danger)"
       },
       {
         label: "تاريخ غير صالح",
