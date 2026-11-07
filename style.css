@@ -496,21 +496,16 @@ hr {
   --red: #D85B63;
   --shadow: 0 8px 28px rgba(36, 87, 166, .07);
   --luxury-radius: 22px;
-}
-
-/* Dark theme foundation */
-body[data-theme="dark"] {
-  --primary: #d0b995;
-  --primary-light: #303c34;
-  --background: #151b18;
-  --surface: #202923;
-  --text: #f0eee7;
-  --muted: #a1a69c;
-  --border: #354139;
-  --green: #83b394;
-  --orange: #dfad68;
-  --red: #df8580;
-  --shadow: 0 8px 28px rgba(0, 0, 0, .18);
+  --primary: #82A9E8;
+  --primary-light: #263B59;
+  --background: #172235;
+  --surface: #213149;
+  --text: #EDF3FC;
+  --muted: #A8B7CC;
+  --border: #35465D;
+  --green: #75B99A;
+  --orange: #E0AD69;
+  --red: #E58A8F;  --shadow: 0 8px 28px rgba(0, 0, 0, .18);
 }
 
 /* Global smoothness */
