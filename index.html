@@ -312,7 +312,121 @@
       </div>
 
     </section>
+<!-- Reports -->
+<section id="reports" class="page">
 
+  <div class="welcome report-header">
+    <div>
+      <h2>مركز التقارير والتحليلات</h2>
+      <p>تحليل شامل ومباشر لحالة مخزون الأدوية</p>
+    </div>
+    <span class="report-live-indicator">● تحليل المخزون</span>
+  </div>
+
+  <div class="report-toolbar">
+    <label for="reportPeriod">نطاق التحليل</label>
+    <select id="reportPeriod">
+      <option value="all">كل الأدوية</option>
+      <option value="30">آخر 30 يوماً</option>
+      <option value="60">آخر 60 يوماً</option>
+      <option value="90">آخر 90 يوماً</option>
+    </select>
+  </div>
+
+  <div class="stats-grid report-stats-grid">
+
+    <div class="stat-card total report-clickable" data-report-filter="all" role="button" tabindex="0">
+      <span>إجمالي الأدوية</span>
+      <strong id="reportTotal">0</strong>
+      <small>عرض كامل المخزون ←</small>
+    </div>
+
+    <div class="stat-card safe report-clickable" data-report-filter="safe" role="button" tabindex="0">
+      <span>أدوية سليمة</span>
+      <strong id="reportSafe">0</strong>
+      <small>عرض الأدوية السليمة ←</small>
+    </div>
+
+    <div class="stat-card expired report-clickable" data-report-filter="expired" role="button" tabindex="0">
+      <span>منتهية الصلاحية</span>
+      <strong id="reportExpired">0</strong>
+      <small>عرض الأدوية المنتهية ←</small>
+    </div>
+
+    <div class="stat-card warning report-clickable" data-report-filter="warning" role="button" tabindex="0">
+      <span>تحتاج إلى متابعة</span>
+      <strong id="reportWarning">0</strong>
+      <small>عرض الأدوية القريبة ←</small>
+    </div>
+
+    <div class="stat-card warning report-clickable" data-report-filter="next30" role="button" tabindex="0">
+      <span>خلال 30 يوماً</span>
+      <strong id="report30Days">0</strong>
+      <small>عرض التفاصيل ←</small>
+    </div>
+
+    <div class="stat-card warning report-clickable" data-report-filter="next60" role="button" tabindex="0">
+      <span>خلال 60 يوماً</span>
+      <strong id="report60Days">0</strong>
+      <small>عرض التفاصيل ←</small>
+    </div>
+
+    <div class="stat-card safe report-clickable" data-report-filter="next90" role="button" tabindex="0">
+      <span>خلال 90 يوماً</span>
+      <strong id="report90Days">0</strong>
+      <small>عرض التفاصيل ←</small>
+    </div>
+
+    <div class="stat-card total report-clickable" data-report-filter="invalid" role="button" tabindex="0">
+      <span>تواريخ غير صالحة</span>
+      <strong id="reportInvalid">0</strong>
+      <small>مراجعة البيانات ←</small>
+    </div>
+
+  </div>
+
+  <div class="form-card report-card">
+    <h3>تحليل حالة الصلاحية</h3>
+    <p>التوزيع الإجمالي للأدوية حسب حالة الصلاحية</p>
+    <div id="reportStatusChart"></div>
+  </div>
+
+  <div class="form-card report-card">
+    <h3>الجدول الزمني لانتهاء الصلاحية</h3>
+    <p>توزيع الأدوية حسب أشهر الانتهاء</p>
+    <div id="reportMonthlyChart"></div>
+  </div>
+
+  <div class="form-card report-card report-details-card" id="reportDetails">
+    <div class="report-details-header">
+      <div>
+        <h3 id="reportDetailsTitle">تفاصيل المخزون</h3>
+        <p id="reportDetailsCount">اختر أي بطاقة أو رسم لعرض التفاصيل</p>
+      </div>
+      <button type="button" id="clearReportFilter" class="secondary-btn">
+        إلغاء التصفية
+      </button>
+    </div>
+
+    <div id="reportDetailsList">
+      <p>ستظهر هنا تفاصيل الأدوية عند اختيار أحد المؤشرات.</p>
+    </div>
+  </div>
+
+  <div class="form-card report-card">
+    <h3>تصدير التقارير</h3>
+    <p>احتفظ بنسخة من بيانات وتحليلات المخزون</p>
+
+    <button id="exportReportCsv" class="primary-btn">
+      تصدير CSV متوافق مع Excel
+    </button>
+
+    <button id="printReport" class="secondary-btn">
+      طباعة / حفظ PDF
+    </button>
+  </div>
+
+</section>
     <!-- Backup -->
     <section id="backup" class="page">
 
