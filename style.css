@@ -316,8 +316,8 @@ textarea {
 }
 
 .status-safe {
-  color: #23764c;
-  background: #e7f5ec;
+  color: var(--primary);
+  background: var(--primary-light);
 }
 
 .status-warning {
