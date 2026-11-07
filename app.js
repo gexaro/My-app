@@ -296,23 +296,7 @@ async function renderReports() {
     const medicines = await getAllMedicines();
     const list = medicines.map(enrichMedicine);
 
-<div id="reportListView" class="report-list-view" hidden>
-
-  <button type="button" id="reportBackButton" class="secondary-btn report-back-button">
-    ← رجوع للإحصائيات
-  </button>
-
-  <div class="welcome report-header">
-    <div>
-      <h2 id="reportListTitle">قائمة الأدوية</h2>
-      <p id="reportListCount">0 دواء</p>
-    </div>
-  </div>
-
-  <div id="reportListContainer" class="medicine-list"></div>
-
-</div>
-    const isWarning = m =>
+    const scopedList = list;    const isWarning = m =>
       ["warning", "critical", "today"].includes(m.statusKey);
 
     const filters = {
