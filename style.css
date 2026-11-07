@@ -3038,40 +3038,128 @@ html {
   }
 }
 /* =========================================
-   Professional Reports UI
+   Premium Reports Dashboard
 ========================================= */
 
-#reports .stats-grid {
+#reports .welcome {
   margin-bottom: 22px;
 }
 
+#reports .report-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 13px;
+  margin-bottom: 24px;
+}
+
 #reports .stat-card {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+  min-height: 112px;
+  padding: 18px 16px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--surface);
+  box-shadow: 0 7px 22px rgba(20, 50, 35, .07);
+  overflow: hidden;
+  transition: transform .22s ease, box-shadow .22s ease;
 }
 
 #reports .stat-card:active {
-  transform: scale(0.97);
+  transform: scale(.97);
+}
+
+#reports .stat-card span {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.7;
+}
+
+#reports .stat-card strong {
+  font-size: 32px;
+  font-weight: 850;
+  letter-spacing: -.5px;
+}
+
+#reports .stat-card.total strong {
+  color: var(--primary);
+}
+
+#reports .stat-card.safe strong {
+  color: var(--green);
+}
+
+#reports .stat-card.warning strong {
+  color: var(--orange);
+}
+
+#reports .stat-card.expired strong {
+  color: var(--red);
+}
+
+#reports .report-card {
+  padding: 20px;
+  margin-bottom: 18px;
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  background: var(--surface);
+  box-shadow: 0 7px 24px rgba(20, 50, 35, .06);
+}
+
+#reports .report-card h3 {
+  margin: 0 0 18px;
+  font-size: 16px;
+  font-weight: 800;
 }
 
 #reportStatusChart,
 #reportMonthlyChart {
-  padding: 18px;
-  margin: 12px 0 22px;
-  border: 1px solid var(--border-color);
-  border-radius: 18px;
-  background: var(--card-bg);
+  padding: 4px 0;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
   overflow: hidden;
 }
 
 #reportStatusChart > div,
 #reportMonthlyChart > div {
-  animation: reportBarEnter 0.45s ease both;
+  padding: 9px 0;
+  margin-bottom: 8px !important;
+  animation: reportBarEnter .4s ease both;
+}
+
+#reportStatusChart > div > div:first-child,
+#reportMonthlyChart > div > div:first-child {
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 650;
+}
+
+#reportStatusChart > div > div:last-child,
+#reportMonthlyChart > div > div:last-child {
+  height: 11px !important;
+  border-radius: 20px;
+  background: var(--background) !important;
+}
+
+#reportStatusChart > div > div:last-child > div,
+#reportMonthlyChart > div > div:last-child > div {
+  border-radius: 20px;
+}
+
+#reports button {
+  border-radius: 14px;
+  transition: transform .2s ease, opacity .2s ease;
+}
+
+#reports button:active {
+  transform: scale(.97);
 }
 
 @keyframes reportBarEnter {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(9px);
   }
   to {
     opacity: 1;
@@ -3079,10 +3167,9 @@ html {
   }
 }
 
-#reports button {
-  transition: transform 0.2s ease, opacity 0.2s ease;
-}
-
-#reports button:active {
-  transform: scale(0.97);
+@media (prefers-reduced-motion: reduce) {
+  #reports * {
+    animation: none !important;
+    transition: none !important;
+  }
 }
