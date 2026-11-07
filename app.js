@@ -397,7 +397,7 @@ track.style.background = "var(--border, #D8DEE9)";
         const bar = document.createElement("div");
         bar.style.height = "100%";
         bar.style.width = (item.value / max * 100) + "%";
-        bar.style.background = item.color || "var(--primary-color, #5686d8)";
+bar.style.background = item.color || "var(--primary, #2456C8)";
         bar.style.borderRadius = "20px";
         bar.style.transition = "width .4s ease";
 
