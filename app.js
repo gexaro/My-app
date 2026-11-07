@@ -113,17 +113,21 @@ function showPage(pageId) {
     renderExpiredMedicines();
   }
 
-if (pageId === "monthly") {
+  if (pageId === "monthly") {
 
-  $("#monthlyMonths").style.display = "block";
-  $("#monthlyMonthsTitle").style.display = "block";
-  $("#monthlyList").style.display = "none";
-  $("#monthlyBackButton").style.display = "none";
+    $("#monthlyMonths").style.display = "block";
+    $("#monthlyMonthsTitle").style.display = "block";
+    $("#monthlyList").style.display = "none";
+    $("#monthlyBackButton").style.display = "none";
 
-  $("#monthFilter").value = "";
+    $("#monthFilter").value = "";
 
-  renderMonthlyMonths();
-}
+    renderMonthlyMonths();
+  }
+
+  if (pageId === "reports") {
+    renderReports();
+  }
 
 }
 
