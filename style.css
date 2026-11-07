@@ -484,17 +484,17 @@ hr {
    ========================================= */
 
 :root {
-  --primary: #244638;
-  --primary-light: #e9eee8;
-  --background: #f5f2eb;
-  --surface: #fffdf8;
-  --text: #252d28;
-  --muted: #85877e;
-  --border: #e8e3d9;
-  --green: #54836a;
-  --orange: #c28b48;
-  --red: #bd625c;
-  --shadow: 0 8px 28px rgba(42, 55, 43, .07);
+  --primary: #2457A6;
+  --primary-light: #DCE7F7;
+  --background: #F1F4F9;
+  --surface: #FFFFFF;
+  --text: #1F2937;
+  --muted: #718096;
+  --border: #DCE4F0;
+  --green: #319B78;
+  --orange: #D58B36;
+  --red: #D85B63;
+  --shadow: 0 8px 28px rgba(36, 87, 166, .07);
   --luxury-radius: 22px;
 }
 
