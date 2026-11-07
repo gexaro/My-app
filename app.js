@@ -1636,7 +1636,14 @@ document.addEventListener(
       theme === "dark" ? "dark" : "light";
 
     document.body.dataset.theme = selectedTheme;
+const themeColorMeta = document.querySelector('meta[name="theme-color"]');
 
+if (themeColorMeta) {
+  themeColorMeta.setAttribute(
+    "content",
+    selectedTheme === "dark" ? "#111B2E" : "#2456C8"
+  );
+}
     localStorage.setItem("expiry-manager-theme", selectedTheme);
 
     if (themeButton) {
