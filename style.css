@@ -3173,3 +3173,223 @@ html {
     transition: none !important;
   }
 }
+/* =========================================
+   Interactive Reports Dashboard
+========================================= */
+
+#reports .report-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+#reports .report-live-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-radius: 30px;
+  background: rgba(34, 160, 107, .12);
+  color: var(--green);
+  font-size: 11px;
+  font-weight: 750;
+}
+
+#reports .report-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 16px 0 20px;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--surface);
+}
+
+#reports .report-toolbar label {
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 750;
+}
+
+#reports #reportPeriod {
+  max-width: 170px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--background);
+  color: var(--text);
+  font: inherit;
+  font-size: 12px;
+}
+
+#reports .report-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+#reports .report-clickable {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  min-height: 132px;
+  padding: 17px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#reports .report-clickable::after {
+  content: "↗";
+  position: absolute;
+  top: 13px;
+  left: 14px;
+  color: var(--text);
+  opacity: .35;
+  font-size: 15px;
+}
+
+#reports .report-clickable small {
+  margin-top: 8px;
+  color: var(--text);
+  opacity: .65;
+  font-size: 10px;
+  font-weight: 650;
+}
+
+#reports .report-clickable:focus-visible,
+#reports .report-chart-item:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 3px;
+}
+
+#reports .report-clickable:active {
+  transform: scale(.97);
+}
+
+#reports .report-card {
+  padding: 20px;
+  margin-bottom: 16px;
+  border-radius: 22px;
+  background: var(--surface);
+}
+
+#reports .report-card h3 {
+  margin-bottom: 7px;
+}
+
+#reports .report-card > p {
+  margin: 0 0 16px;
+  color: var(--text);
+  opacity: .65;
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+#reports .report-chart-item {
+  padding: 10px 8px;
+  border-radius: 12px;
+  transition: background .2s ease, transform .2s ease;
+}
+
+#reports .report-chart-item:hover {
+  background: var(--background);
+}
+
+#reports .report-chart-item:active {
+  transform: scale(.99);
+}
+
+#reports .report-chart-item > div:first-child {
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+#reports .report-chart-item > div:last-child {
+  height: 12px !important;
+  margin-top: 8px;
+  border-radius: 20px;
+  background: var(--background) !important;
+}
+
+#reports .report-chart-item > div:last-child > div {
+  border-radius: 20px;
+}
+
+#reports .report-details-card {
+  scroll-margin-top: 90px;
+  border-color: var(--primary);
+  border-width: 1px;
+}
+
+#reports .report-details-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+#reports .report-details-header h3 {
+  margin: 0 0 6px;
+}
+
+#reports .report-details-header p {
+  margin: 0;
+  color: var(--text);
+  opacity: .65;
+  font-size: 12px;
+}
+
+#reports #reportDetailsList {
+  display: grid;
+  gap: 10px;
+}
+
+#reports #reportDetailsList > p {
+  color: var(--text);
+  opacity: .65;
+  font-size: 13px;
+}
+
+#reports #clearReportFilter {
+  flex-shrink: 0;
+  padding: 9px 12px;
+  font-size: 11px;
+}
+
+#reports #exportReportCsv,
+#reports #printReport {
+  width: 100%;
+  margin-top: 9px;
+}
+
+@media (min-width: 600px) {
+  #reports .report-stats-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 360px) {
+  #reports .report-clickable {
+    min-height: 120px;
+    padding: 13px;
+  }
+
+  #reports .report-clickable strong {
+    font-size: 27px;
+  }
+
+  #reports .report-details-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
