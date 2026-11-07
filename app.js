@@ -296,7 +296,9 @@ async function renderReports() {
     const medicines = await getAllMedicines();
     const list = medicines.map(enrichMedicine);
 
-    const scopedList = list;    const isWarning = m =>
+    const scopedList = list;
+
+    const isWarning = m =>
       ["warning", "critical", "today"].includes(m.statusKey);
 
     const filters = {
