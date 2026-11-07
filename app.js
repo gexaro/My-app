@@ -417,7 +417,7 @@ bar.style.background = item.color || "var(--primary, #2456C8)";
       {
         label: "سليم",
         value: count(filters.safe),
-        color: "#22a06b"
+color: "var(--safe)"
       },
       {
         label: "قريب الانتهاء",
