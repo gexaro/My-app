@@ -432,7 +432,7 @@ color: "var(--danger)"
       {
         label: "تاريخ غير صالح",
         value: count(filters.invalid),
-        color: "#888888"
+color: "var(--muted)"
       }
     ], item => {
       const map = {
