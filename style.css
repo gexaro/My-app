@@ -3393,3 +3393,49 @@ html {
     flex-direction: column;
   }
 }
+/* Reports - Dedicated Medicine List */
+#reports .report-list-view[hidden] {
+  display: none !important;
+}
+
+#reports .report-list-view:not([hidden]) {
+  display: block;
+  animation: reportViewIn .25s ease;
+}
+
+#reports .report-back-button {
+  width: auto;
+  min-width: 180px;
+  margin: 0 0 20px;
+  padding: 12px 18px;
+}
+
+#reports .report-list-view .report-header {
+  margin-bottom: 18px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--surface);
+}
+
+#reports #reportListCount {
+  margin: 6px 0 0;
+  color: var(--text);
+  opacity: .65;
+  font-size: 13px;
+}
+
+#reports #reportListContainer {
+  margin-bottom: 24px;
+}
+
+@keyframes reportViewIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
