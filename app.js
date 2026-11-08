@@ -1374,6 +1374,78 @@ async function renderStorageInfo() {
 
 }
 
+async function runDatabaseIntegrityCheck() {
+
+  const button = $("#checkIntegrityBtn");
+  const report = $("#integrityReport");
+
+  button.disabled = true;
+  button.textContent = "جارٍ الفحص...";
+  report.textContent = "يتم فحص بيانات الأدوية...";
+
+  try {
+
+    const result = await checkDatabaseIntegrity();
+
+    report.replaceChildren();
+
+    const summary = document.createElement("p");
+
+    summary.textContent =
+      "إجمالي السجلات: " + result.total +
+      " | سليمة: " + result.valid +
+      " | تحتاج مراجعة: " + result.invalid +
+      " | التكرارات: " + result.duplicates;
+
+    report.appendChild(summary);
+
+    if (result.issues.length === 0) {
+
+      const success = document.createElement("p");
+      success.textContent = "جميع بيانات الأدوية سليمة.";
+      report.appendChild(success);
+
+    } else {
+
+      const heading = document.createElement("h4");
+      heading.textContent = "السجلات التي تحتاج إلى مراجعة:";
+      report.appendChild(heading);
+
+      const list = document.createElement("ul");
+
+      result.issues.forEach(function(issue) {
+
+        const item = document.createElement("li");
+
+        item.textContent =
+          issue.name +
+          " (ID: " + issue.id + "): " +
+          issue.problems.join("، ");
+
+        list.appendChild(item);
+
+      });
+
+      report.appendChild(list);
+
+    }
+
+  } catch (error) {
+
+    console.error("Database integrity check failed:", error);
+
+    report.textContent = "تعذر إكمال فحص سلامة البيانات.";
+    showToast("حدث خطأ أثناء فحص البيانات");
+
+  } finally {
+
+    button.disabled = false;
+    button.textContent = "فحص سلامة البيانات";
+
+  }
+
+}
+
 let csvPendingMedicines = [];
 
 function parseCsvRows(text) {
