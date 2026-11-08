@@ -458,6 +458,44 @@
         <button id="importBtn" class="secondary-btn">
           استعادة النسخة الاحتياطية
         </button>
+        
+<hr>
+
+<h3>مساحة التخزين</h3>
+
+<p class="help-text">
+  متابعة المساحة المستخدمة والمتبقية للتطبيق على هذا الجهاز.
+</p>
+
+<div class="stat-card" style="margin-top: 12px;">
+
+  <span>المساحة المستخدمة</span>
+  <strong id="storageUsed">جارٍ الفحص...</strong>
+
+  <span>الحصة التخزينية المقدرة</span>
+  <strong id="storageQuota">—</strong>
+
+  <span>المساحة المتبقية تقديرياً</span>
+  <strong id="storageRemaining">—</strong>
+
+  <span>نسبة الاستخدام</span>
+  <strong id="storagePercent">—</strong>
+
+  <progress
+    id="storageProgress"
+    max="100"
+    value="0"
+    style="width: 100%; height: 12px;"
+  ></progress>
+
+  <small id="storageStatus">
+    يتم فحص مساحة التخزين...
+  </small>
+
+</div>
+
+<hr>
+
 <hr>
 
 <h3>استيراد الأدوية من Google Sheets</h3>
