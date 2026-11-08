@@ -144,10 +144,11 @@ return cache.match("./index.html");
   // الملفات الثابتة: Cache First
   event.respondWith(
 
-    caches.match(request)
+caches.open(CACHE_NAME)
 
-      .then(async function(cachedResponse) {
+  .then(async function(cache) {
 
+    const cachedResponse = await cache.match(request);
         if (cachedResponse) {
           return cachedResponse;
         }
