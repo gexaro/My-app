@@ -101,10 +101,9 @@ function showPage(pageId, shouldRender = true) {
     renderDashboard();
   }
 
-  if (pageId === "all") {
-    renderAllMedicines();
-  }
-
+if (pageId === "all" && shouldRender) {
+  renderAllMedicines();
+}
   if (pageId === "soon") {
     renderSoonMedicines();
   }
