@@ -468,6 +468,123 @@ async function getDatabaseInfo() {
 
 
 /* =========================================
+   14. Database Integrity Check
+========================================= */
+
+async function checkDatabaseIntegrity() {
+
+  const medicines = await getAllMedicines();
+
+  const issues = [];
+  const seenIds = new Set();
+  const seenMedicines = new Set();
+
+  let duplicateCount = 0;
+  let validCount = 0;
+
+  medicines.forEach(function(medicine, index) {
+
+    const problems = [];
+
+    if (
+      !Number.isInteger(medicine.id) ||
+      medicine.id <= 0
+    ) {
+      problems.push("معرّف الدواء غير صالح");
+    }
+
+    if (seenIds.has(medicine.id)) {
+      problems.push("معرّف الدواء مكرر");
+    }
+
+    seenIds.add(medicine.id);
+
+    if (
+      typeof medicine.name !== "string" ||
+      !medicine.name.trim()
+    ) {
+      problems.push("اسم الدواء مفقود أو غير صالح");
+    }
+
+    const expiryDate = String(
+      medicine.expiryDate || ""
+    );
+
+    let validDate = false;
+
+    if (/^\d{4}-\d{2}-\d{2}$/.test(expiryDate)) {
+
+      const parts = expiryDate.split("-").map(Number);
+
+      const parsedDate = new Date(
+        Date.UTC(parts[0], parts[1] - 1, parts[2])
+      );
+
+      validDate = (
+        parsedDate.getUTCFullYear() === parts[0] &&
+        parsedDate.getUTCMonth() + 1 === parts[1] &&
+        parsedDate.getUTCDate() === parts[2]
+      );
+
+    }
+
+    if (!validDate) {
+      problems.push("تاريخ الانتهاء غير صالح");
+    }
+
+    if (
+      validDate &&
+      medicine.expiryMonth !== expiryDate.slice(0, 7)
+    ) {
+      problems.push("شهر الانتهاء لا يطابق التاريخ");
+    }
+
+    if (
+      typeof medicine.name === "string" &&
+      medicine.name.trim() &&
+      validDate
+    ) {
+
+      const duplicateKey =
+        medicine.name.trim().toLowerCase() +
+        "|" +
+        expiryDate;
+
+      if (seenMedicines.has(duplicateKey)) {
+        duplicateCount++;
+        problems.push("دواء مكرر بالاسم والتاريخ");
+      }
+
+      seenMedicines.add(duplicateKey);
+
+    }
+
+    if (problems.length) {
+
+      issues.push({
+        id: medicine.id ?? "غير معروف",
+        name: medicine.name || "اسم غير معروف",
+        problems: problems
+      });
+
+    } else {
+
+      validCount++;
+
+    }
+
+  });
+
+  return {
+    total: medicines.length,
+    valid: validCount,
+    invalid: issues.length,
+    duplicates: duplicateCount,
+    issues: issues
+  };
+
+}
+/* =========================================
    14. Database Initialization
 ========================================= */
 
