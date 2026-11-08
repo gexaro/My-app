@@ -1,0 +1,245 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Expiry Manager - Tests</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 750px;
+      margin: 30px auto;
+      padding: 20px;
+      background: #f3f5fa;
+      color: #17243b;
+    }
+    button {
+      padding: 12px 20px;
+      background: #2456c8;
+      color: white;
+      border: 0;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    .result {
+      padding: 10px;
+      margin: 8px 0;
+      background: white;
+      border-radius: 8px;
+    }
+    .pass { color: #1674c8; }
+    .fail { color: #d94841; }
+  </style>
+</head>
+<body>
+
+  <h2>اختبارات نظام الصلاحية</h2>
+  <p>اختبارات مستقلة لا تغيّر بيانات التطبيق.</p>
+
+  <button id="runTests">تشغيل جميع الاختبارات</button>
+
+  <h3 id="summary">لم يتم تشغيل الاختبارات بعد</h3>
+  <div id="results"></div>
+
+  <script src="./db.js"></script>
+  <script src="./expiry.js"></script>
+
+  <script>
+    const results = document.getElementById("results");
+    const summary = document.getElementById("summary");
+
+    function runTests() {
+      results.replaceChildren();
+
+      let passed = 0;
+      let failed = 0;
+
+      function test(name, callback) {
+        const item = document.createElement("div");
+        item.className = "result";
+
+        try {
+          if (callback() !== true) {
+            throw new Error("نتيجة غير متوقعة");
+          }
+
+          item.textContent = "✓ " + name;
+          item.classList.add("pass");
+          passed++;
+
+        } catch (error) {
+          item.textContent = "✗ " + name + " — " + error.message;
+          item.classList.add("fail");
+          failed++;
+        }
+
+        results.appendChild(item);
+      }
+
+      function expect(value) {
+        if (!value) {
+          throw new Error("فشل التحقق");
+        }
+        return true;
+      }
+
+      function dateAfter(days) {
+        const date = new Date();
+        date.setDate(date.getDate() + days);
+
+        return (
+          date.getFullYear() + "-" +
+          String(date.getMonth() + 1).padStart(2, "0") + "-" +
+          String(date.getDate()).padStart(2, "0")
+        );
+      }
+
+      test("تاريخ صحيح", () =>
+        expect(parseExpiryDate("2026-12-31") !== null)
+      );
+
+      test("السنة الكبيسة صحيحة", () =>
+        expect(parseExpiryDate("2024-02-29") !== null)
+      );
+
+      test("رفض 29 فبراير في سنة غير كبيسة", () =>
+        expect(parseExpiryDate("2023-02-29") === null)
+      );
+
+      test("رفض الشهر 13", () =>
+        expect(parseExpiryDate("2026-13-01") === null)
+      );
+
+      test("رفض صيغة تاريخ غير صحيحة", () =>
+        expect(parseExpiryDate("2026/12/31") === null)
+      );
+
+      test("تصنيف يوم الانتهاء كمنتهي", () =>
+        expect(getExpiryStatus(-1).key === "expired")
+      );
+
+      test("تصنيف الانتهاء اليوم", () =>
+        expect(getExpiryStatus(0).key === "today")
+      );
+
+      test("اليوم 1 ضمن القريب جداً", () =>
+        expect(getExpiryStatus(1).key === "critical")
+      );
+
+      test("اليوم 30 ضمن القريب جداً", () =>
+        expect(getExpiryStatus(30).key === "critical")
+      );
+
+      test("اليوم 31 ضمن التحذير", () =>
+        expect(getExpiryStatus(31).key === "warning")
+      );
+
+      test("اليوم 60 ضمن التحذير", () =>
+        expect(getExpiryStatus(60).key === "warning")
+      );
+
+      test("اليوم 61 ضمن السليم", () =>
+        expect(getExpiryStatus(61).key === "safe")
+      );
+
+      test("التاريخ غير الصالح", () =>
+        expect(getExpiryStatus(null).key === "invalid")
+      );
+
+      test("حساب الأيام المتبقية", () =>
+        expect(calculateDaysRemaining(dateAfter(10)) === 10)
+      );
+
+      const sample = [
+        { id: 1, name: "A", expiryDate: dateAfter(-1) },
+        { id: 2, name: "B", expiryDate: dateAfter(0) },
+        { id: 3, name: "C", expiryDate: dateAfter(30) },
+        { id: 4, name: "D", expiryDate: dateAfter(31) },
+        { id: 5, name: "E", expiryDate: dateAfter(60) },
+        { id: 6, name: "F", expiryDate: dateAfter(61) },
+        { id: 7, name: "G", expiryDate: "invalid" }
+      ];
+
+      test("قائمة القريبة تشمل اليوم وحتى 60 يوماً", () =>
+        expect(getExpiringSoon(sample).length === 4)
+      );
+
+      test("قائمة المنتهية تستبعد تاريخ اليوم", () =>
+        expect(getExpiredMedicines(sample).length === 1)
+      );
+
+      test("قائمة السليمة تبدأ بعد 60 يوماً", () =>
+        expect(getSafeMedicines(sample).length === 1)
+      );
+
+      const stats = getDashboardStatistics(sample);
+
+      test("إجمالي الإحصائيات", () =>
+        expect(stats.total === 7)
+      );
+
+      test("إحصاء الأدوية المنتهية", () =>
+        expect(stats.expired === 1)
+      );
+
+      test("إحصاء الأدوية غير الصالحة", () =>
+        expect(stats.invalid === 1)
+      );
+
+      test("تحويل فبراير 2024 إلى يوم 29", () =>
+        expect(
+          prepareMedicine({
+            name: "Test",
+            expiryDate: "2024-02"
+          }).expiryDate === "2024-02-29"
+        )
+      );
+
+      test("تحويل فبراير 2023 إلى يوم 28", () =>
+        expect(
+          prepareMedicine({
+            name: "Test",
+            expiryDate: "2023-02"
+          }).expiryDate === "2023-02-28"
+        )
+      );
+
+      test("رفض الشهر غير الصحيح عند التحضير", () => {
+        try {
+          prepareMedicine({
+            name: "Test",
+            expiryDate: "2026-13"
+          });
+          return false;
+        } catch {
+          return true;
+        }
+      });
+
+      test("رفض الاسم الفارغ", () => {
+        try {
+          prepareMedicine({
+            name: " ",
+            expiryDate: "2026-12"
+          });
+          return false;
+        } catch {
+          return true;
+        }
+      });
+
+      summary.textContent =
+        "النتيجة: " + passed + " ناجح | " +
+        failed + " فاشل | " +
+        (passed + failed) + " اختبار";
+
+      summary.className = failed === 0 ? "pass" : "fail";
+    }
+
+    document.getElementById("runTests")
+      .addEventListener("click", runTests);
+  </script>
+
+</body>
+</html>
