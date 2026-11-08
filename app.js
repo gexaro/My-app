@@ -212,7 +212,7 @@ async function renderDashboard() {
 
     $("#expiredCount").textContent = stats.expired;
 
-    $("#invalidCount").textContent = stats.invalid;
+
     const recent = sortMedicinesByExpiry(medicines)
       .slice(0, 5);
 
