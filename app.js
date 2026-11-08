@@ -1013,7 +1013,34 @@ document.addEventListener("visibilitychange", function() {
   }
 
 });
+/* =========================================
+   Refresh Expiry Data At Midnight
+========================================= */
 
+function scheduleMidnightRefresh() {
+
+  const now = new Date();
+
+  const nextMidnight = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate() + 1,
+    0, 0, 0, 0
+  );
+
+  const delay = nextMidnight.getTime() - now.getTime();
+
+  setTimeout(function() {
+
+    refreshExpiryDataOnResume();
+
+    scheduleMidnightRefresh();
+
+  }, delay);
+
+}
+
+scheduleMidnightRefresh();
 /* =========================================
    15. Search Input
 ========================================= */
