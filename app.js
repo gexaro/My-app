@@ -101,10 +101,14 @@ function showPage(pageId, shouldRender = true) {
     renderDashboard();
   }
 
-if (pageId === "all" && shouldRender) {
-  renderAllMedicines();
-}
-  if (pageId === "soon") {
+if (pageId === "all") {
+  const title = document.querySelector("#all .welcome h2");
+  title.textContent = "جميع الأدوية";
+
+  if (shouldRender) {
+    renderAllMedicines();
+  }
+}  if (pageId === "soon") {
     renderSoonMedicines();
   }
 
