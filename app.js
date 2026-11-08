@@ -1874,8 +1874,12 @@ $("#monthlyBackButton").addEventListener(
       importBackup
     );
 
-    await renderDashboard();
+    $("#checkIntegrityBtn").addEventListener(
+      "click",
+      runDatabaseIntegrityCheck
+    );
 
+    await renderDashboard();
     await registerServiceWorker();
 
     console.log("Expiry Manager is ready");
