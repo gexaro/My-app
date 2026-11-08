@@ -307,10 +307,9 @@ async function renderReports() {
       expired: m => m.statusKey === "expired",
       warning: isWarning,
       invalid: m => m.statusKey === "invalid",
-      next30: m => m.daysRemaining >= 0 && m.daysRemaining <= 30,
-      next60: m => m.daysRemaining >= 0 && m.daysRemaining <= 60,
-      next90: m => m.daysRemaining >= 0 && m.daysRemaining <= 90
-    };
+next30: m => Number.isFinite(m.daysRemaining) && m.daysRemaining >= 0 && m.daysRemaining <= 30,
+next60: m => Number.isFinite(m.daysRemaining) && m.daysRemaining >= 0 && m.daysRemaining <= 60,
+next90: m => Number.isFinite(m.daysRemaining) && m.daysRemaining >= 0 && m.daysRemaining <= 90    };
 
     const count = condition =>
       scopedList.filter(condition).length;
