@@ -57,10 +57,12 @@ self.addEventListener("activate", function(event) {
 
           cacheNames.map(function(cacheName) {
 
-            if (cacheName !== CACHE_NAME) {
-              return caches.delete(cacheName);
-            }
-
+if (
+  cacheName.startsWith("expiry-manager-") &&
+  cacheName !== CACHE_NAME
+) {
+  return caches.delete(cacheName);
+}
           })
 
         );
