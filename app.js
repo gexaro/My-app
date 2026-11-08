@@ -1270,6 +1270,107 @@ async function importBackup() {
   }
 
 }
+
+async function renderStorageInfo() {
+
+  const usedElement = $("#storageUsed");
+  const quotaElement = $("#storageQuota");
+  const remainingElement = $("#storageRemaining");
+  const percentElement = $("#storagePercent");
+  const progressElement = $("#storageProgress");
+  const statusElement = $("#storageStatus");
+
+  function formatBytes(bytes) {
+
+    if (bytes >= 1024 * 1024 * 1024) {
+      return (bytes / (1024 * 1024 * 1024)).toFixed(2) + " GB";
+    }
+
+    return (bytes / (1024 * 1024)).toFixed(2) + " MB";
+
+  }
+
+  if (
+    !navigator.storage ||
+    typeof navigator.storage.estimate !== "function"
+  ) {
+
+    usedElement.textContent = "غير متاح";
+    quotaElement.textContent = "غير متاح";
+    remainingElement.textContent = "غير متاح";
+    percentElement.textContent = "غير متاح";
+
+    statusElement.textContent =
+      "المتصفح لا يوفر معلومات مساحة التخزين.";
+
+    return;
+
+  }
+
+  try {
+
+    const estimate = await navigator.storage.estimate();
+
+    const usage = estimate.usage;
+    const quota = estimate.quota;
+
+    if (
+      !Number.isFinite(usage) ||
+      !Number.isFinite(quota) ||
+      quota <= 0
+    ) {
+      throw new Error("Storage estimate unavailable");
+    }
+
+    const remaining = Math.max(0, quota - usage);
+
+    const percentage = Math.min(
+      100,
+      (usage / quota) * 100
+    );
+
+    usedElement.textContent = formatBytes(usage);
+    quotaElement.textContent = formatBytes(quota);
+    remainingElement.textContent = formatBytes(remaining);
+
+    percentElement.textContent =
+      percentage.toFixed(1) + "%";
+
+    progressElement.value = percentage;
+
+    if (percentage >= 90) {
+
+      statusElement.textContent =
+        "تحذير: مساحة التخزين المستخدمة مرتفعة جداً.";
+
+    } else if (percentage >= 80) {
+
+      statusElement.textContent =
+        "تنبيه: اقتربت مساحة التخزين من الحد المتاح.";
+
+    } else {
+
+      statusElement.textContent =
+        "مساحة التخزين ضمن النطاق المتاح حالياً.";
+
+    }
+
+  } catch (error) {
+
+    console.error("Storage estimate error:", error);
+
+    usedElement.textContent = "غير متاح";
+    quotaElement.textContent = "غير متاح";
+    remainingElement.textContent = "غير متاح";
+    percentElement.textContent = "غير متاح";
+
+    statusElement.textContent =
+      "تعذر الحصول على معلومات مساحة التخزين.";
+
+  }
+
+}
+
 let csvPendingMedicines = [];
 
 function parseCsvRows(text) {
