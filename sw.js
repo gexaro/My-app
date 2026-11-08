@@ -159,7 +159,7 @@ caches.open(CACHE_NAME)
 
           const copy = networkResponse.clone();
 
-          const cache = await caches.open(CACHE_NAME);
+
 
           await cache.put(request, copy);
 
