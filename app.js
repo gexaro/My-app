@@ -1574,7 +1574,7 @@ document.querySelectorAll("[data-dashboard-stat]").forEach(function(card) {
       return;
     }
 
-    showPage("all");
+showPage("all", type !== "safe");
 
     const title = document.querySelector("#all .welcome h2");
 
