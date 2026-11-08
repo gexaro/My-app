@@ -1863,7 +1863,10 @@ $("#monthlyBackButton").addEventListener(
       "click",
       runDatabaseIntegrityCheck
     );
-
+$("#clearAllMedicinesBtn").addEventListener(
+  "click",
+  clearAllMedicinesUI
+);
     await renderDashboard();
     await registerServiceWorker();
 
