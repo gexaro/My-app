@@ -77,7 +77,7 @@ function convertMonthToExpiryDate(monthValue) {
    2. Page Navigation
 ========================================= */
 
-function showPage(pageId) {
+function showPage(pageId, shouldRender = true) {
 
   document.querySelectorAll(".page").forEach(function(page) {
 
