@@ -5,7 +5,7 @@
    Version 1.0
 ========================================= */
 
-const CACHE_NAME = "expiry-manager-v27";
+const CACHE_NAME = "expiry-manager-v28";
 
 const APP_FILES = [
   "./",
@@ -14,6 +14,7 @@ const APP_FILES = [
   "./db.js",
   "./expiry.js",
   "./app.js",
+  "./navigation.js",
   "./settings.js",
   "./manifest.json"
 ];
