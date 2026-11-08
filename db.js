@@ -482,30 +482,59 @@ async function checkDatabaseIntegrity() {
   let duplicateCount = 0;
   let validCount = 0;
 
+
   medicines.forEach(function(medicine, index) {
 
     const problems = [];
 
+    // حماية الفحص من السجلات التالفة
     if (
-      !Number.isInteger(medicine.id) ||
-      medicine.id <= 0
+      medicine === null ||
+      typeof medicine !== "object" ||
+      Array.isArray(medicine)
     ) {
+
+      issues.push({
+        id: "غير معروف",
+        name: "سجل تالف رقم " + (index + 1),
+        problems: ["بيانات السجل غير صالحة"]
+      });
+
+      return;
+
+    }
+
+    // فحص معرّف الدواء
+    const validId = (
+      Number.isInteger(medicine.id) &&
+      medicine.id > 0
+    );
+
+    if (!validId) {
+
       problems.push("معرّف الدواء غير صالح");
-    }
 
-    if (seenIds.has(medicine.id)) {
+    } else if (seenIds.has(medicine.id)) {
+
       problems.push("معرّف الدواء مكرر");
+
+    } else {
+
+      seenIds.add(medicine.id);
+
     }
 
-    seenIds.add(medicine.id);
-
+    // فحص اسم الدواء
     if (
       typeof medicine.name !== "string" ||
       !medicine.name.trim()
     ) {
+
       problems.push("اسم الدواء مفقود أو غير صالح");
+
     }
 
+    // فحص تاريخ الانتهاء
     const expiryDate = String(
       medicine.expiryDate || ""
     );
@@ -529,16 +558,22 @@ async function checkDatabaseIntegrity() {
     }
 
     if (!validDate) {
+
       problems.push("تاريخ الانتهاء غير صالح");
+
     }
 
+    // مطابقة شهر الانتهاء مع التاريخ
     if (
       validDate &&
       medicine.expiryMonth !== expiryDate.slice(0, 7)
     ) {
+
       problems.push("شهر الانتهاء لا يطابق التاريخ");
+
     }
 
+    // فحص التكرار بالاسم والتاريخ
     if (
       typeof medicine.name === "string" &&
       medicine.name.trim() &&
@@ -551,14 +586,18 @@ async function checkDatabaseIntegrity() {
         expiryDate;
 
       if (seenMedicines.has(duplicateKey)) {
+
         duplicateCount++;
+
         problems.push("دواء مكرر بالاسم والتاريخ");
+
       }
 
       seenMedicines.add(duplicateKey);
 
     }
 
+    // تسجيل نتيجة الفحص
     if (problems.length) {
 
       issues.push({
