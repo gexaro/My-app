@@ -962,7 +962,57 @@ function refreshCurrentPage() {
   showPage(activePage.id);
 
 }
+/* =========================================
+   Refresh Expiry Data When App Resumes
+========================================= */
 
+function refreshExpiryDataOnResume() {
+
+  const activePage = document.querySelector(".page.active");
+
+  if (!activePage) return;
+
+  switch (activePage.id) {
+
+    case "dashboard":
+      renderDashboard();
+      break;
+
+    case "all":
+      renderAllMedicines($("#searchInput").value);
+      break;
+
+    case "soon":
+      renderSoonMedicines();
+      break;
+
+    case "expired":
+      renderExpiredMedicines();
+      break;
+
+    case "monthly":
+      if ($("#monthlyList").style.display !== "none") {
+        renderMonthlyMedicines();
+      } else {
+        renderMonthlyMonths();
+      }
+      break;
+
+    case "reports":
+      renderReports();
+      break;
+
+  }
+
+}
+
+document.addEventListener("visibilitychange", function() {
+
+  if (document.visibilityState === "visible") {
+    refreshExpiryDataOnResume();
+  }
+
+});
 
 /* =========================================
    15. Search Input
