@@ -124,14 +124,14 @@ self.addEventListener("fetch", function(event) {
 
         .catch(async function() {
 
-          const cachedPage = await caches.match(request);
+const cache = await caches.open(CACHE_NAME);
+const cachedPage = await cache.match(request);
 
-          if (cachedPage) {
-            return cachedPage;
-          }
+if (cachedPage) {
+  return cachedPage;
+}
 
-          return caches.match("./index.html");
-
+return cache.match("./index.html");
         })
 
     );
