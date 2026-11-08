@@ -132,8 +132,11 @@ if (pageId === "all") {
     renderReports();
   }
 
-}
+  if (pageId === "backup") {
+    renderStorageInfo();
+  }
 
+}
 
 /* =========================================
    3. Medicine Card
