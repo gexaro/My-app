@@ -1163,70 +1163,92 @@ async function importBackup() {
   const file = $("#importFile").files[0];
 
   if (!file) {
-
     showToast("اختر ملف النسخة الاحتياطية");
-
     return;
-
   }
 
   try {
 
     const text = await file.text();
-
     const backup = JSON.parse(text);
 
     if (
+      !backup ||
       backup.application !== "Expiry Manager" ||
       !Array.isArray(backup.medicines)
     ) {
-
       throw new Error("ملف النسخة الاحتياطية غير صالح");
-
-    }
-
-    const confirmed = window.confirm(
-      "سيتم دمج الأدوية الموجودة في النسخة الاحتياطية مع الأدوية الحالية. هل تريد المتابعة؟"
-    );
-
-    if (!confirmed) {
-      return;
     }
 
     const current = await getAllMedicines();
 
     const existing = new Set(
       current.map(function(item) {
-        return item.name.trim().toLowerCase() +
-          "|" + item.expiryDate;
+        return (
+          String(item.name || "").trim().toLowerCase() +
+          "|" +
+          String(item.expiryDate || "")
+        );
       })
     );
 
-    const newMedicines = backup.medicines.filter(function(item) {
+    const newMedicines = [];
 
-      if (!item.name || !item.expiryDate) {
-        return false;
+    let duplicateCount = 0;
+    let invalidCount = 0;
+
+    backup.medicines.forEach(function(item) {
+
+      try {
+
+        const prepared = prepareMedicine(item);
+
+        const key =
+          prepared.name.toLowerCase() +
+          "|" +
+          prepared.expiryDate;
+
+        if (existing.has(key)) {
+          duplicateCount++;
+          return;
+        }
+
+        existing.add(key);
+        newMedicines.push(prepared);
+
+      } catch (error) {
+
+        invalidCount++;
+
       }
-
-      const key = item.name.trim().toLowerCase() +
-        "|" + item.expiryDate;
-
-      if (existing.has(key)) {
-        return false;
-      }
-
-      existing.add(key);
-
-      return true;
 
     });
 
+    const summary =
+      "ملخص استعادة النسخة الاحتياطية:\n\n" +
+      "إجمالي السجلات: " + backup.medicines.length + "\n" +
+      "قابلة للإضافة: " + newMedicines.length + "\n" +
+      "تكرارات: " + duplicateCount + "\n" +
+      "بيانات غير صالحة: " + invalidCount +
+      "\n\nهل تريد استيراد الأدوية الصالحة الجديدة؟";
+
     if (!newMedicines.length) {
 
-      showToast("لا توجد أدوية جديدة للاستيراد");
+      window.alert(
+        summary.replace(
+          "هل تريد استيراد الأدوية الصالحة الجديدة؟",
+          "لا توجد أدوية جديدة صالحة للاستيراد."
+        )
+      );
 
       return;
 
+    }
+
+    const confirmed = window.confirm(summary);
+
+    if (!confirmed) {
+      return;
     }
 
     await bulkAddMedicines(newMedicines);
@@ -1248,8 +1270,6 @@ async function importBackup() {
   }
 
 }
-
-
 let csvPendingMedicines = [];
 
 function parseCsvRows(text) {
