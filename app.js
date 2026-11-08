@@ -883,7 +883,56 @@ async function deleteMedicineUI(id) {
   }
 
 }
+/* =========================================
+   Clear All Medicines
+========================================= */
 
+async function clearAllMedicinesUI() {
+
+  try {
+
+    const medicines = await getAllMedicines();
+
+    if (medicines.length === 0) {
+      showToast("لا توجد أدوية لمسحها");
+      return;
+    }
+
+    const firstConfirmed = window.confirm(
+      "سيتم حذف جميع الأدوية وعددها " +
+      medicines.length +
+      ". هل تريد المتابعة؟"
+    );
+
+    if (!firstConfirmed) {
+      return;
+    }
+
+    const finalConfirmed = window.confirm(
+      "تأكيد نهائي: سيتم حذف جميع سجلات الأدوية نهائياً ولا يمكن التراجع. هل أنت متأكد؟"
+    );
+
+    if (!finalConfirmed) {
+      return;
+    }
+
+    await clearMedicines();
+
+    $("#integrityReport").replaceChildren();
+
+    await renderDashboard();
+
+    showToast("تم مسح جميع الأدوية");
+
+  } catch (error) {
+
+    console.error(error);
+
+    showToast("تعذر مسح جميع الأدوية");
+
+  }
+
+}
 
 /* =========================================
    14. Refresh Current Page
