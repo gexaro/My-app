@@ -1307,7 +1307,10 @@ body {
   justify-content: space-between;
 
   min-height: 76px;
-  padding: 13px 20px;
+padding:
+  max(22px, env(safe-area-inset-top))
+  20px
+  13px;
 
   color: #FFFFFF;
   background: #172B4D;
