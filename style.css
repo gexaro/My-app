@@ -1,4 +1,3 @@
-
 /* =========================================
    EXPIRY MANAGER — COBALT & ICE 21
    Complete visual theme
@@ -1308,7 +1307,7 @@ body {
 
   min-height: 76px;
 padding:
-  max(22px, env(safe-area-inset-top))
+  max(22px, calc(env(safe-area-inset-top) + 12px))
   20px
   13px;
 
